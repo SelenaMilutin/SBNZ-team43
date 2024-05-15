@@ -1,0 +1,28 @@
+package cep;
+//import com.ftn.sbnz.model.events.SharkSightEvent;
+
+
+//rule "Shark sighting"
+//when
+//    $s1: SharkSightEvent($id: sharkId)
+//    Number(intValue >= 3) from accumulate(
+//        $s2: SharkSightEvent(
+////        this != $s1,
+//        sharkId == $id,
+//        expected == false,
+//        this after[0s, 1h] $s1
+//        ),
+//        count($s2)
+//    )
+//    not (Alarm(sharkId == $id))
+//then
+//    insert(new Alarm($id));
+//    System.out.println("Alarm made for " + $id);
+//end
+//
+//rule "Alert noticed"
+//when
+//    Alarm($id: sharkId)
+//then
+//    System.out.println("ALARM! Shark entered " + $id);
+//end

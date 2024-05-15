@@ -1,0 +1,17 @@
+package backward;
+//import com.ftn.sbnz.model.models.Cloud;
+
+
+//query isContained(String x, String y)
+//    Cloud( x, y;)
+//    or
+//    ( Cloud(z, y;) and isContained(x, z;))
+//end
+//
+//rule "Find stratiformis"
+//when
+//    $cloud: Cloud($name: child)
+//    isContained($name, "stratiformis";)
+//then
+//    System.out.println($cloud);
+//end
