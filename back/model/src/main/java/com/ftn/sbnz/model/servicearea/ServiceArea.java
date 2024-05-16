@@ -3,11 +3,7 @@ package com.ftn.sbnz.model.servicearea;
 import lombok.*;
 
 import javax.persistence.*;
-
 import com.ftn.sbnz.model.user.Client;
-
-import static javax.persistence.InheritanceType.JOINED;
-
 import java.util.List;
 
 @NoArgsConstructor
