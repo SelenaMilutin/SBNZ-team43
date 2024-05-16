@@ -5,8 +5,8 @@ import lombok.*;
 
 import javax.persistence.*;
 import static javax.persistence.InheritanceType.JOINED;
-//@NoArgsConstructor
-//@AllArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 @ToString
@@ -14,10 +14,8 @@ import static javax.persistence.InheritanceType.JOINED;
 @Inheritance(strategy=JOINED)
 @Table(name = "package_complaint")
 public class PackageComplaint extends Complaint {
-
-//     TODO
-//     @OneToOne
-//     @JoinColumn(name = "package_id")
-//     private Packages package;
+    @OneToOne
+    @JoinColumn(name= "packages_id")
+    private Packages packages;
     
 }
