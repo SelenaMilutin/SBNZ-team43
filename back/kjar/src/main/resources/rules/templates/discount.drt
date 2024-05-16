@@ -1,0 +1,37 @@
+template header
+boughtNum
+isPremium
+percentage
+
+package templates
+
+import com.ftn.sbnz.model.contract.Contract;
+import com.ftn.sbnz.model.user.Discount;
+
+template "discount-rules"
+
+rule "Give Discount_@{row.rowNumber}"
+no-loop true
+when
+    $c: Contract(
+    $id: client.id
+    )
+    Number(intValue == @{boughtNum}) from accumulate(
+            $c2: Contract(
+            this != $c,
+            client.id == $id,
+            client.premium == @{isPremium},
+            activeFlag == true,
+            this after[0s, 730d] $c
+            //over window: length(@{boughtNum})
+            ),
+            count($c2)
+        )
+    $d: Discount(client.id == $id)
+then
+    modify($c) { setDiscount(@{percentage})};
+    modify($d){ setPercentage(@{percentage}) };
+    System.out.println("new discount " + @{percentage});
+end
+
+end template

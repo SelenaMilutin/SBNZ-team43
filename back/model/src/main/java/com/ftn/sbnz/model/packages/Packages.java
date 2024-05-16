@@ -23,6 +23,7 @@ public class Packages {
     @ManyToOne
     private  Packages parent;
     private String name;
+    private double monthlyPrice;
     private PackageType packageType;
 
 }

@@ -11,7 +11,7 @@ import javax.persistence.*;
 @ToString
 @Entity
 @Table(name = "contractCancelation")
-public class ContractCancelation {
+public class ContractCancellation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;

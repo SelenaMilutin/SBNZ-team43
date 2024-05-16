@@ -18,6 +18,6 @@ public class Discount {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
     @ManyToOne
-    private AppUser appUser;
+    private Client client;
     private double percentage;
 }
