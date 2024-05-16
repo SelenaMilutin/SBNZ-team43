@@ -1,5 +1,6 @@
 package com.ftn.sbnz.model.contract;
 
+import com.ftn.sbnz.model.packages.Packages;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -28,8 +29,8 @@ public class Contract {
     @ManyToOne
     private Client client;
 
-    // TODO
-    // @OneToOne
-    // JoinColumn(name = "package_id")
-    // private Package package;
+
+    @OneToOne
+    @JoinColumn(name = "packages_id")
+    private Packages packages;
 }

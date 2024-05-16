@@ -1,7 +1,8 @@
 package com.ftn.sbnz.model.contract;
 
-import lombok.*;
+import com.ftn.sbnz.model.packages.Packages;
 import javax.persistence.*;
+import lombok.*;
 
 import com.ftn.sbnz.model.user.Client;
 
@@ -22,9 +23,9 @@ public class ContractProposal {
     @JoinColumn(name = "client_id", referencedColumnName = "id")
     private Client client;
 
-    // TODO
-    // @OneToOne
-    // JoinColumn(name = "package_id")
-    // private Package package;
+
+     @OneToOne
+     @JoinColumn(name = "packages_id")
+     private Packages packages;
 
 }

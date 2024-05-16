@@ -13,6 +13,7 @@ import com.ftn.sbnz.model.contract.ContractProposal;
 import com.ftn.sbnz.model.servicearea.ServiceArea;
 
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 @ToString
@@ -20,6 +21,7 @@ import com.ftn.sbnz.model.servicearea.ServiceArea;
 @Table(name = "client")
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Client extends AppUser {
+    private boolean premium;
 
     @ManyToOne
     @JoinColumn( name = "service_area_id")
