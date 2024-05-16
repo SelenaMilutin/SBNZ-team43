@@ -1,4 +1,4 @@
-package com.ftn.sbnz.model.user;
+package com.ftn.sbnz.model.packages;
 
 import lombok.*;
 
@@ -13,8 +13,10 @@ import javax.persistence.Table;
 @Setter
 @ToString
 @Entity
-@Table(name = "client")
+@Table(name = "mobilePackages")
 @Inheritance(strategy = InheritanceType.JOINED)
-public class Client extends AppUser{
-    private boolean premium;
+public class MobilePackages extends Packages{
+    private double minutes;
+    private double internet;
+    private double expiration;
 }
