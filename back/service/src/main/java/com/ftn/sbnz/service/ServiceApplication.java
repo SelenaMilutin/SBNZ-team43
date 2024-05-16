@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
 
 @SpringBootApplication
 @ComponentScan(basePackages = "com.ftn.sbnz")
-@EntityScan("com.ftn.sbnz.model.user")
+@EntityScan("com.ftn.sbnz.model")
 public class ServiceApplication  {
 	
 	private static Logger log = LoggerFactory.getLogger(ServiceApplication.class);
