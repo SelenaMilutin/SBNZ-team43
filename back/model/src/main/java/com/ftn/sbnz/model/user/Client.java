@@ -2,10 +2,15 @@ package com.ftn.sbnz.model.user;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.Table;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.*;
+
+import com.ftn.sbnz.model.complaint.Complaint;
+import com.ftn.sbnz.model.contract.Contract;
+import com.ftn.sbnz.model.contract.ContractProposal;
+import com.ftn.sbnz.model.servicearea.ServiceArea;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -17,4 +22,22 @@ import javax.persistence.Table;
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Client extends AppUser{
     private boolean premium;
+
+    @ManyToOne
+    @JoinColumn( name = "service_area_id")
+    private ServiceArea serviceArea;
+
+    @OneToMany( mappedBy = "client")
+    private List<Contract> contracts = new ArrayList<>();
+
+    @OneToOne(mappedBy = "client", cascade = CascadeType.ALL)
+    private ContractProposal contractProposal;
+
+    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Complaint> complaints = new ArrayList<>();
+
+    public boolean hasContractProposal() {
+        return this.contractProposal != null;
+    }
+
 }

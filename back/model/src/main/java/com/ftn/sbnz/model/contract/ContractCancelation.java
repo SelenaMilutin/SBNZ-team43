@@ -1,4 +1,4 @@
-package com.ftn.sbnz.model.packages;
+package com.ftn.sbnz.model.contract;
 
 import lombok.*;
 
