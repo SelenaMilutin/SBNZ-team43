@@ -1,0 +1,27 @@
+package rules.cep;
+dialect  "mvel"
+
+import com.ftn.sbnz.model.contract.Contract;
+import com.ftn.sbnz.model.user.Discount;
+
+rule "Give first discount"
+no-loop true
+when
+    $c: Contract(
+    $id: client.id
+    )
+    Number(intValue == 2) from accumulate(
+            $c2: Contract(
+            this != $c,
+            client.id == $id,
+            activeFlag == true,
+            this after[0s, 730d] $c
+            ),
+            count($c2)
+        )
+    not (Discount(client.id == $id))
+then
+    modify($c) { setDiscount(0.05)};
+    insert(new Discount(0L, $c.getClient(), 0.05));
+    System.out.println("prvo pravljenje kupona");
+end
