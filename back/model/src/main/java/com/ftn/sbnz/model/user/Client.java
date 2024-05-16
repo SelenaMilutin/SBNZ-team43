@@ -2,10 +2,12 @@ package com.ftn.sbnz.model.user;
 
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.*;
 
+import com.ftn.sbnz.model.complaint.Complaint;
 import com.ftn.sbnz.model.contract.Contract;
 import com.ftn.sbnz.model.contract.ContractProposal;
 import com.ftn.sbnz.model.servicearea.ServiceArea;
@@ -24,10 +26,13 @@ public class Client extends AppUser {
     private ServiceArea serviceArea;
 
     @OneToMany( mappedBy = "client")
-    private List<Contract> contracts;
+    private List<Contract> contracts = new ArrayList<>();
 
     @OneToOne(mappedBy = "client", cascade = CascadeType.ALL)
     private ContractProposal contractProposal;
+
+    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Complaint> complaints = new ArrayList<>();
 
     public boolean hasContractProposal() {
         return this.contractProposal != null;

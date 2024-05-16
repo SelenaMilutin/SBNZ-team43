@@ -4,6 +4,8 @@ import lombok.*;
 
 import javax.persistence.*;
 import com.ftn.sbnz.model.user.Client;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @NoArgsConstructor
@@ -30,7 +32,7 @@ public class ServiceArea {
     private int currentCapacity;
 
     @OneToMany( mappedBy = "serviceArea")
-    private List<Client> clients;
+    private List<Client> clients = new ArrayList<>();
 
     public double getCapacityPercentage() {
         return currentCapacity/maximumCapacity;
