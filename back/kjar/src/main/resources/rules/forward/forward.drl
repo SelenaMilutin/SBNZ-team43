@@ -1,0 +1,52 @@
+package forward;
+
+import com.ftn.sbnz.model.contract.Contract;
+import com.ftn.sbnz.model.contract.ContractProposal;
+import com.ftn.sbnz.model.packages.Packages;
+import com.ftn.sbnz.model.user.Client;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.ArrayList;
+
+rule "Exists"
+when 
+    $contract: Contract()
+then
+    System.out.println("Contract exists");
+end
+
+rule "ExpiredContractNotification"
+when
+    $contract: Contract(activeFlag == false, $client: client)
+then
+    // Send notification
+    $client.setName("alala");
+    System.out.println("Notification: Contract expired for client " + $client.getId());
+    update($client);
+end
+
+
+rule "SwitchToSimilarPackageTrialPeriod"
+when
+    $client: Client(
+        $contractProposal: contractProposal != null
+    )
+    not (Contract(client == $client, activeFlag == true))
+    $package: Packages(
+        packageType == $contractProposal.getPackages().getPackageType()
+       // this != $contractProposal.getPackages()
+    )
+then
+    Contract newContract = new Contract();
+    newContract.setClient($client);
+    newContract.setPackages($package);
+    newContract.setExpirationDate(LocalDateTime.now().plusDays(14));
+    newContract.setActiveFlag(true);
+
+    List<Contract> contracts = new ArrayList<>($client.getContracts());
+    contracts.add(newContract);
+    $client.setContracts(contracts);
+    $client.setContractProposal(null);
+
+    update($client);
+end

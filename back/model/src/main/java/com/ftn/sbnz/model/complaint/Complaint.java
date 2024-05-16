@@ -16,6 +16,7 @@ import static javax.persistence.InheritanceType.JOINED;
 public class Complaint {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     private String message;
 

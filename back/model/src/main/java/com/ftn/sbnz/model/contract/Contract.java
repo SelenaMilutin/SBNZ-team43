@@ -29,7 +29,6 @@ public class Contract {
     @ManyToOne
     private Client client;
 
-
     @OneToOne
     @JoinColumn(name = "packages_id")
     private Packages packages;
