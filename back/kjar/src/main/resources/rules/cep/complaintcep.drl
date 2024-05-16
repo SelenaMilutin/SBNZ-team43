@@ -1,0 +1,39 @@
+package rules.cep;
+
+import com.ftn.sbnz.model.complaint.PackageComplaint;
+import com.ftn.sbnz.model.packages.Packages;
+
+rule "10 complaints for package in 24 hours"
+    when
+    $c: PackageComplaint(
+        $packages: packages
+        )
+        Number(intValue == 10) from accumulate(
+                $c2: PackageComplaint(
+                this != $c,
+                packages.id == $packages.id,
+                $c2 after[0s, 24h] $c
+                ),
+            count($c2)
+        )
+    then
+        System.out.println("Alerting admin: 10 complaints received for package " + $packages.id + " in 24 hours");
+end
+
+rule "50 complaints for package in 24 hours"
+    when
+    $c: PackageComplaint(
+        $packages: packages
+        )
+        Number(intValue == 50) from accumulate(
+                $c2: PackageComplaint(
+                this != $c,
+                packages.id == $packages.id,
+                $c2 after[0s, 24h] $c
+                ),
+            count($c2)
+        )
+    then
+        System.out.println("Alerting admin: 50 complaints received for package " + $packages.id + " in 24 hours\nTaking package off offers.");
+        modify($packages) { setInOfferFlag(false) }
+end

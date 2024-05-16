@@ -21,9 +21,10 @@ public class Packages {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
     @ManyToOne
-    private  Packages parent;
+    private Packages parent;
     private String name;
     private double monthlyPrice;
     private PackageType packageType;
+    private boolean inOfferFlag;
 
 }

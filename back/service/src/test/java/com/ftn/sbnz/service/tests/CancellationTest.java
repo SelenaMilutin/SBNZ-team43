@@ -39,7 +39,7 @@ public class CancellationTest {
         this.doTest(ksession);
     }
     private void doTest(KieSession ksession){
-        ContractCancellation contractCancellation1 = new ContractCancellation(0L, new Contract(0L, LocalDateTime.now().minusMonths(12), LocalDateTime.now().plusMonths(2), true, new Client(), new Packages(0L, null, "aaa", 10.0, PackageType.CABLE), 0.0));
+        ContractCancellation contractCancellation1 = new ContractCancellation(0L, new Contract(0L, LocalDateTime.now().minusMonths(12), LocalDateTime.now().plusMonths(2), true, new Client(), new Packages(0L, null, "aaa", 10.0, PackageType.CABLE, true), 0.0));
 //        Customer customer1 = new Customer(1L, 19);
 //        Customer customer2 = new Customer(2L, 27);
 //        Customer customer3 = new Customer(3L, 32);

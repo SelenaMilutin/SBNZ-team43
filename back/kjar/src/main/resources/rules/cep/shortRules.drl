@@ -12,7 +12,8 @@ rule "Consumption Alert"
     $client: contract.client
     )
     then
-    System.out.println("%s %s, %s", $client.getName(), $client.getLastName, $m);
+    // System.out.println("%s %s, %s", $client.getName(), $client.getLastName, $m);
+    System.out.println($client.getName() + $client.getLastName + $m);
 end
 
 

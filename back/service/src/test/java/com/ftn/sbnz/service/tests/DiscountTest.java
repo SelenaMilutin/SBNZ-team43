@@ -43,10 +43,10 @@ public class DiscountTest {
 //        KieSession ksessionCommonRule = kContainer.newKieSession("cepKsession");
 //        SessionPseudoClock clock = ksessionCommonRule.getSessionClock();
 
-        Contract contract1 = new Contract(0L, LocalDateTime.now().minusMonths(12), LocalDateTime.now().plusMonths(2), true, new Client(), new Packages(0L, null, "aaa", 10.0, PackageType.CABLE), 0.0);
-        Contract contract2 = new Contract(1L, LocalDateTime.now().minusMonths(12), LocalDateTime.now().plusMonths(2), true, new Client(), new Packages(0L, null, "aaa", 10.0, PackageType.CABLE), 0.0);
-        Contract contract3 = new Contract(2L, LocalDateTime.now().minusMonths(12), LocalDateTime.now().plusMonths(2), true, new Client(), new Packages(0L, null, "aaa", 10.0, PackageType.CABLE), 0.0);
-        Contract contract4 = new Contract(3L, LocalDateTime.now().minusMonths(12), LocalDateTime.now().plusMonths(2), true, new Client(), new Packages(0L, null, "aaa", 10.0, PackageType.CABLE), 0.0);
+        Contract contract1 = new Contract(0L, LocalDateTime.now().minusMonths(12), LocalDateTime.now().plusMonths(2), true, new Client(), new Packages(0L, null, "aaa", 10.0, PackageType.CABLE, true), 0.0);
+        Contract contract2 = new Contract(1L, LocalDateTime.now().minusMonths(12), LocalDateTime.now().plusMonths(2), true, new Client(), new Packages(0L, null, "aaa", 10.0, PackageType.CABLE, true), 0.0);
+        Contract contract3 = new Contract(2L, LocalDateTime.now().minusMonths(12), LocalDateTime.now().plusMonths(2), true, new Client(), new Packages(0L, null, "aaa", 10.0, PackageType.CABLE, true), 0.0);
+        Contract contract4 = new Contract(3L, LocalDateTime.now().minusMonths(12), LocalDateTime.now().plusMonths(2), true, new Client(), new Packages(0L, null, "aaa", 10.0, PackageType.CABLE, true), 0.0);
         Discount dis = new Discount(0L, new Client(), 0.1);
 //        Customer customer1 = new Customer(1L, 19);
 //        Customer customer2 = new Customer(2L, 27);
