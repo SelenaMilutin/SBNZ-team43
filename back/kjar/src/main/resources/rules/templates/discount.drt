@@ -30,7 +30,7 @@ when
     $d: Discount(client.id == $id)
 then
     modify($c) { setDiscount(@{percentage})};
-    modify($d){ setPercentage(@{percentage}) };
+    //modify($d){ setPercentage(@{percentage}) };
     System.out.println("new discount " + @{percentage});
 end
 

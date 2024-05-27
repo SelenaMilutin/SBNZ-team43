@@ -18,7 +18,7 @@ import org.springframework.context.event.EventListener;
 @Getter
 @Setter
 @ToString
-//@Role(Role.Type.EVENT)
+@Role(Role.Type.EVENT)
 @Entity
 @Table(name = "contract")
 public class Contract {
