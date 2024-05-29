@@ -16,12 +16,12 @@ import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 public class CEPTest {
-    
+
 
     @Test
     public void test() {
         KieServices ks = KieServices.Factory.get();
-        KieContainer kContainer = ks.getKieClasspathContainer(); 
+        KieContainer kContainer = ks.getKieClasspathContainer();
         KieSession ksession = kContainer.newKieSession("cepKsession");
 
 
@@ -33,7 +33,7 @@ public class CEPTest {
             PackageComplaint complaint = new PackageComplaint();
             complaint.setPackages(packages);
             complaint.setSubmitTime(new Date());
-            ksession.insert(complaint); 
+            ksession.insert(complaint);
             clock.advanceTime(1, TimeUnit.HOURS);
         }
 
@@ -43,7 +43,7 @@ public class CEPTest {
     @Test
     public void test2() {
         KieServices ks = KieServices.Factory.get();
-        KieContainer kContainer = ks.getKieClasspathContainer(); 
+        KieContainer kContainer = ks.getKieClasspathContainer();
         KieSession ksession = kContainer.newKieSession("cepKsession");
 
 
@@ -54,11 +54,11 @@ public class CEPTest {
         packages.setInOfferFlag(true);
         ksession.insert(packages);
         for (int i = 0; i <= 50; i++) {
-            PackageComplaint complaint = new PackageComplaint(); 
+            PackageComplaint complaint = new PackageComplaint();
             complaint.setPackages(packages);
             complaint.setSubmitTime(new Date());
-            ksession.insert(complaint); 
-            clock.advanceTime(15, TimeUnit.MINUTES); 
+            ksession.insert(complaint);
+            clock.advanceTime(15, TimeUnit.MINUTES);
         }
 
         ksession.fireAllRules();

@@ -1,5 +1,16 @@
 package com.ftn.sbnz.model.user;
 
+import lombok.Getter;
+
+@Getter
 public enum Role {
-    CLIENT, ADMIN
+
+    CLIENT("CLIENT"),
+    ADMIN("ADMIN");
+
+    private final String authority;
+
+    Role(String authority) {
+        this.authority = authority;
+    }
 }
