@@ -52,6 +52,8 @@ public class SecurityConfig {
                 .antMatchers("/*").permitAll()
                 .antMatchers("/api/auth").permitAll();
 
+        http.headers().frameOptions().disable();
+        http.cors();
 
         http.sessionManagement(httpSecuritySessionManagementConfigurer -> httpSecuritySessionManagementConfigurer
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
