@@ -5,7 +5,10 @@
     <kbase name="cepKbase" eventProcessingMode="stream" packages="cep">
         <ksession name="cepKsession" clockType="pseudo"/>
     </kbase>
-    <kbase name="forwardKbase" packages="forward">
+    <kbase name="forwardKbase" packages="rules.forward">
         <ksession name="forwardKsession"/>
+    </kbase>
+    <kbase name="forwardServiceareaKbase" packages="rules.forward.servicearea">
+        <ksession name="forwardServiceareaKsession"/>
     </kbase>
 </kmodule>

@@ -4,7 +4,7 @@ import java.util.UUID;
 
 public class UserDoesNotExistByIdException extends  RuntimeException {
 
-    public UserDoesNotExistByIdException(UUID userId) {
+    public UserDoesNotExistByIdException(Long userId) {
         super(String.format("User with id %s does not exist", userId));
     }
 }

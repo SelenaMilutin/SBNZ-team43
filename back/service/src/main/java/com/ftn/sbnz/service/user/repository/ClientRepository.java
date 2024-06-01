@@ -1,13 +1,14 @@
 package com.ftn.sbnz.service.user.repository;
+
 import com.ftn.sbnz.model.user.AppUser;
+import com.ftn.sbnz.model.user.Client;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface AppUserRepository extends JpaRepository<AppUser, Long> {
+public interface ClientRepository extends JpaRepository<Client, Long> {
 
-    Optional<AppUser> findByEmail(String email);
+    Optional<Client> findByEmail(String email);
 
     Boolean existsByEmail(String email);
-
 }

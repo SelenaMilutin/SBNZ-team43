@@ -6,7 +6,7 @@ import com.ftn.sbnz.service.auth.dto.LoginDTO;
 
 public interface IAuthService {
 
-    void createUser(CreateUserDTO dto);
+    void createClientUser(CreateUserDTO dto);
 
     AuthResponseDTO login(LoginDTO dto);
 }

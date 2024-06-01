@@ -1,4 +1,5 @@
 import axios from "axios";
+import { HTTP_SERVER_URL } from "../../constants/Constants";
 
 interface Params {
     [key: string]: any;
@@ -6,7 +7,7 @@ interface Params {
 
 export class HttpClient  {
 
-    private static baseUrl: string = "http://localhost:8081/api"
+    private static baseUrl: string = HTTP_SERVER_URL+"/api"
 
     public static async get(url: string, params?: Params): Promise<any> {
         return axios.get(this.baseUrl.concat(url), { params })

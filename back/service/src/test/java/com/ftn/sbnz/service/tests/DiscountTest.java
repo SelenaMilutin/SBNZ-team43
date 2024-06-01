@@ -42,7 +42,7 @@ public class DiscountTest {
 //        KieContainer kContainer = ks.getKieClasspathContainer();
 //        KieSession ksessionCommonRule = kContainer.newKieSession("cepKsession");
 //        SessionPseudoClock clock = ksessionCommonRule.getSessionClock();
-        Client client = new Client(false, null, null, null, null);
+        Client client = new Client(false, null, null, null, null, null);
         client.setActiveFlag(true);
         Contract contract1 = new Contract(0L, LocalDateTime.now().minusMonths(12), LocalDateTime.now().plusMonths(2), true, client, new Packages(0L, null, "aaa", 10.0, PackageType.CABLE, true), 0.0);
         Contract contract2 = new Contract(1L, LocalDateTime.now().minusMonths(12), LocalDateTime.now().plusMonths(2), true, client, new Packages(0L, null, "aaa", 10.0, PackageType.CABLE, true), 0.0);

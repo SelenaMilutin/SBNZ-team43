@@ -7,8 +7,6 @@ import { RegisterPageStyle } from "./RegisterPageStyle";
 
 const RegisterPage = () => {
 
-    const { onLogin } = useAuth();
-
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [name, setName] = useState("");
@@ -16,7 +14,7 @@ const RegisterPage = () => {
     const [phone, setPhone] = useState("");
     const [address, setAddress] = useState("");
     
-    function onLoginClick() {
+    function onRegisterClick() {
 
         AuthService.register(username, password, name, lastName, phone, address)
         .then( (response) => {
@@ -37,7 +35,7 @@ const RegisterPage = () => {
             <Input inputType="text" label="Last Name" setValue={setLastName}></Input>
             <Input inputType="text" label="Phone Number" setValue={setPhone}></Input>
             <Input inputType="text" label="Address" setValue={setAddress}></Input>
-            <Button text="Login" type="submit" onClickHandler={onLoginClick}/>
+            <Button text="Register" type="submit" onClickHandler={onRegisterClick}/>
         </RegisterPageStyle>
     )
 

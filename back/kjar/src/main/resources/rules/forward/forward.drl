@@ -1,15 +1,16 @@
-package forward;
+package rules.forward;
 
 import com.ftn.sbnz.model.contract.Contract;
 import com.ftn.sbnz.model.contract.ContractProposal;
 import com.ftn.sbnz.model.packages.Packages;
 import com.ftn.sbnz.model.user.Client;
+import com.ftn.sbnz.model.servicearea.ServiceArea;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.ArrayList;
 
 rule "Exists"
-when 
+when
     $contract: Contract()
 then
     System.out.println("Contract exists");

@@ -2,7 +2,7 @@ package com.ftn.sbnz.service.advice;
 
 import com.ftn.sbnz.service.exception.user.UserDoesNotExistByIdException;
 import com.ftn.sbnz.service.exception.user.UsernameAlreadyExistsException;
-import com.ftn.sbnz.service.exception.user.UsernameNotFoundForLoginException;
+import com.ftn.sbnz.service.exception.user.UsernameNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class AuthExceptionHandlerAdvice {
 
-    @ExceptionHandler(UsernameNotFoundForLoginException.class)
-    public ResponseEntity<String> handleUsernameNotFoundException(UsernameNotFoundForLoginException ex) {
+    @ExceptionHandler(UsernameNotFoundException.class)
+    public ResponseEntity<String> handleUsernameNotFoundException(UsernameNotFoundException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 

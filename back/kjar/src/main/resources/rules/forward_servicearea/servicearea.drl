@@ -1,0 +1,37 @@
+package forward_servicearea;
+
+import com.ftn.sbnz.model.user.Client;
+import com.ftn.sbnz.model.servicearea.ServiceArea;
+
+rule "Exists"
+when
+    $sa: ServiceArea()
+then
+    System.out.println("Service area exists");
+end
+
+rule "Service Area Set"
+when
+    $client: Client( $serviceArea: serviceArea != null ) @watch(serviceArea)
+then
+    System.out.println("Service area is set to: " + $serviceArea);
+    $serviceArea.incrementCurrentCapacity();
+    update($serviceArea);
+    // Add further actions here
+end
+
+rule "Service Area Set to Null"
+when
+    $client: Client( serviceArea == null, previousServiceArea != null )
+then
+    System.out.println("Service area has been set to null");
+
+    ServiceArea previousServiceArea = $client.getPreviousServiceArea();
+    if (previousServiceArea != null) {
+        previousServiceArea.decrementCurrentCapacity();
+        update(previousServiceArea);
+    }
+
+    $client.setPreviousServiceArea(null);
+    update($client);
+end

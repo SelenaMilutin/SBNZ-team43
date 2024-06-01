@@ -6,4 +6,8 @@
     	<ksession name="ExampleSession" />
     </kbase>
 
+    <kbase name="forwardKbase" packages="com.ftn.sbnz.kjar.src.main.resources.rules.forward">
+        <ksession name="forwardKsession"/>
+    </kbase>
+
 </kmodule>

@@ -16,18 +16,20 @@ import com.ftn.sbnz.model.servicearea.ServiceArea;
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString
 @Entity
+@ToString
 @Table(name = "client")
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Client extends AppUser {
     private boolean premium;
 
     @ManyToOne
-    @JoinColumn( name = "service_area_id")
+    @JoinColumn(name = "service_area_id")
     private ServiceArea serviceArea;
 
-    @OneToMany( mappedBy = "client")
+    private transient ServiceArea previousServiceArea;
+
+    @OneToMany(mappedBy = "client")
     private List<Contract> contracts = new ArrayList<>();
 
     @OneToOne(mappedBy = "client", cascade = CascadeType.ALL)
@@ -38,6 +40,15 @@ public class Client extends AppUser {
 
     public boolean hasContractProposal() {
         return this.contractProposal != null;
+    }
+
+    public void setServiceArea(ServiceArea serviceArea) {
+        this.previousServiceArea = this.serviceArea;
+        this.serviceArea = serviceArea;
+    }
+
+    public boolean isServiceAreaSet() {
+        return this.serviceArea != null;
     }
 
 }

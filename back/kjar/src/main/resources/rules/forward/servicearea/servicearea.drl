@@ -1,0 +1,44 @@
+package rules.forward.servicearea;
+import java.time.LocalDateTime;
+import com.ftn.sbnz.model.user.Client;
+import com.ftn.sbnz.model.servicearea.ServiceArea;
+import com.ftn.sbnz.model.servicearea.IServiceAreaService;
+
+global IServiceAreaService serviceAreaService;
+
+rule "just anyhting"
+when
+then
+ System.out.println("Always Fire Rule has fired.");
+end
+
+rule "Service Area Set"
+when
+    $client: Client( $serviceArea: serviceArea != null )
+then
+    System.out.println("Service area is set to: " + $serviceArea.getId());
+    $serviceArea.incrementCurrentCapacity();
+    update($serviceArea);
+    update($client);
+end
+
+rule "Service Area Set to Null"
+when
+    $client: Client( serviceArea == null, $previousServiceArea: previousServiceArea != null )
+then
+    System.out.println("Service area has been set to null");
+
+    $previousServiceArea.decrementCurrentCapacity();
+    update($previousServiceArea);
+
+    $client.setPreviousServiceArea(null);
+    update($client);
+end
+
+rule "Service Area Became Unavailable"
+when
+    $sa: ServiceArea(availableFlag == false)
+then
+    $sa.setLastUnavailableTimestamp(LocalDateTime.now());
+    serviceAreaService.notifyUsersAboutUnavailableServiceArea($sa);
+end

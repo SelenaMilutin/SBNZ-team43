@@ -5,6 +5,7 @@ import lombok.*;
 import javax.persistence.*;
 import com.ftn.sbnz.model.user.Client;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +13,6 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString
 @Entity
 @Table(name = "service_area")
 public class ServiceArea {
@@ -31,10 +31,24 @@ public class ServiceArea {
 
     private int currentCapacity;
 
+    private transient LocalDateTime lastUnavailableTimestamp;
+
     @OneToMany( mappedBy = "serviceArea")
     private List<Client> clients = new ArrayList<>();
 
     public double getCapacityPercentage() {
-        return currentCapacity/maximumCapacity;
+        return (double) currentCapacity / maximumCapacity;
+    }
+
+    public void incrementCurrentCapacity() {
+        currentCapacity++;
+    }
+
+    public void decrementCurrentCapacity() {
+        currentCapacity--;
+    }
+
+    public String toString() {
+        return "Service area " + this.getId().toString();
     }
 }
