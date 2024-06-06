@@ -30,6 +30,7 @@ public class AppUser implements UserDetails {
     private String name;
     private String lastName;
     private String phone;
+    @Column(unique = true)
     private String email;
     private String password;
     private String address;

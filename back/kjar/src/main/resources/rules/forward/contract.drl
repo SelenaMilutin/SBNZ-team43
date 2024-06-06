@@ -1,0 +1,37 @@
+package rules.forward;
+
+import com.ftn.sbnz.model.contract.Contract;
+import com.ftn.sbnz.model.contract.ContractProposal;
+import com.ftn.sbnz.model.contract.events.NewContractCreation;
+import com.ftn.sbnz.model.packages.Packages;
+import com.ftn.sbnz.model.user.Client;
+import com.ftn.sbnz.model.servicearea.ServiceArea;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Collection;
+
+global LocalDateTime timeBoundry;
+global Collection<NewContractCreation> contractCreations;
+
+rule "AlertNearExpiration"
+when
+    $contract: Contract(activeFlag == true, $client: client)
+    not (NewContractCreation(oldContract.client == $client, creationTime.isAfter(timeBoundry)))
+then
+    // Send notification
+    String message = "Notification: Contract " + $contract.getPackages().getName() + " is ending in less than a month" + $client.getId();
+    System.out.println(message);
+    insert(new NewContractCreation(message, $contract, LocalDateTime.now()));
+end
+
+rule "MakeProposal"
+when
+    $contractCreation: NewContractCreation($client: oldContract.client)
+then
+    // Send notification
+    String message = $contractCreation.getMessage();
+    System.out.println(message);
+    contractCreations.add($contractCreation);
+//    delete($contractCreation);
+end

@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Bean;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -40,7 +41,8 @@ public class DroolsConfigTest {
         Client client = new Client();
         List<Client> clients = new ArrayList<>();
         clients.add(client);
-        ServiceArea serviceArea = new ServiceArea(1L, true, true, false, 50, 1, clients );
+        ServiceArea serviceArea = new ServiceArea(1L, true, true, true, 0, 0, LocalDateTime.now(), clients);
+
         client.setServiceArea(serviceArea);
 
         kieSession.insert(client);
