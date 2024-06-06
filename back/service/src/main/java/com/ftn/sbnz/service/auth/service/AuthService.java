@@ -53,6 +53,6 @@ public class AuthService implements IAuthService {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = jwtService.generateToken();
         System.out.println(token);
-        return new AuthResponseDTO(token, user.getUsername());
+        return new AuthResponseDTO(token, user.getUsername(), user.getId(), user.getRole().getAuthority());
     }
 }

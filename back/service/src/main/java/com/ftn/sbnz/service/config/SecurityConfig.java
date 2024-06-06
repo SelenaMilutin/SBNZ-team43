@@ -60,7 +60,6 @@ public class SecurityConfig {
         http.headers().frameOptions().disable();
         http.cors();
 
-
         return http.build();
     }
 

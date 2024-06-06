@@ -31,7 +31,7 @@ public class ServiceArea {
 
     private int currentCapacity;
 
-    private transient LocalDateTime lastUnavailableTimestamp;
+    private LocalDateTime lastUnavailableTimestamp;
 
     @OneToMany( mappedBy = "serviceArea")
     private List<Client> clients = new ArrayList<>();
@@ -49,6 +49,6 @@ public class ServiceArea {
     }
 
     public String toString() {
-        return "Service area " + this.getId().toString();
+        return "Service area " + this.getId().toString() + " available = " + this.isAvailableFlag();
     }
 }

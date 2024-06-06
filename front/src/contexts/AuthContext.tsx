@@ -5,7 +5,7 @@ import { addTokenToRequestInterceptor, ejectInterceptor } from "../interceptors/
 
 
 interface AuthContextType {
-    user: {username: string} | null;
+    user: {username: string, userId: number, role: string} | null;
     token: String | null;
     onLogin: (userData: any) => void;
     onLogout: () => void;
@@ -21,7 +21,7 @@ const AuthContext = createContext<AuthContextType>({
 });
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-    const [user, setUser] = useState<{username: string} | null>(null);
+    const [user, setUser] = useState<{username: string, userId: number, role: string} | null>(null);
     const [token, setToken] = useState<string|null>(null);
     const [interceptorId, setInterceptorId] = useState<number>(-1)
     const navigate = useNavigate();
@@ -29,7 +29,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     const onLogin = (userData: AuthResponse) => {
         console.log("Hey from on login, setting token and username" , userData)
         setToken(userData.accessToken);
-        let user = {username: userData.username}
+        let user = {username: userData.username, userId: userData.userId, role: userData.role}
         setUser(user)
         let interceptor = addTokenToRequestInterceptor(userData.accessToken);
         setInterceptorId(interceptor);

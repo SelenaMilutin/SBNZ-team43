@@ -15,4 +15,11 @@ public class NotificationMapper {
         return notificationDTO;
     }
 
+    public NotificationDTO mapToMoreThanPercentAreasUnavailableNotification(LocalDateTime timestamp, int percent) {
+        NotificationDTO notificationDTO = new NotificationDTO();
+        notificationDTO.setTimestamp(timestamp);
+        notificationDTO.setMessage(String.format("More than %s percent of service areas are currently unavailable", percent));
+        return notificationDTO;
+    }
+
 }

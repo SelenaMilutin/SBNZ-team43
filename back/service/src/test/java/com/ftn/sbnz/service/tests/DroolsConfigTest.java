@@ -40,7 +40,7 @@ public class DroolsConfigTest {
         Client client = new Client();
         List<Client> clients = new ArrayList<>();
         clients.add(client);
-        ServiceArea serviceArea = new ServiceArea(1L, true, true, false, 50, 1, clients );
+        ServiceArea serviceArea = new ServiceArea(1L, true, true, false, 50, 1, null, clients  );
         client.setServiceArea(serviceArea);
 
         kieSession.insert(client);

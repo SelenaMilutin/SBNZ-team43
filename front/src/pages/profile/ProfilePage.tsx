@@ -39,7 +39,7 @@ const ProfilePage = () => {
             <p>Phone Number: {userProfile?.phone}</p>
             <p>Blocked: {userProfile?.blockedFlag ? "yes" : "no"}</p>
             <p>Service Area: {userProfile?.serviceAreaId}</p>
-            <p>Service Area Available: {userProfile?.serviceAreaAvailable ? "yes" : "no"}</p>
+            <p>Service Area Available: {userProfile?.serviceAreaAvailable ? "✅" : "❌"}</p>
             <p>Service Area Current Capacity: {userProfile?.serviceAreaCurrentCapacity}</p>
             <p>Service Area Maximum Capacity: {userProfile?.serviceAreaMaximumCapacity}</p>
         </ProfilePageStyle>

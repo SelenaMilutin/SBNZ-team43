@@ -14,11 +14,13 @@ export class HttpClient  {
     }
 
     public static async post(url: string, body: any, params?: Params): Promise<any> {
-        return axios.post(this.baseUrl.concat(url), body)
+        return axios.post(this.baseUrl.concat(url), body, { params })
     }
 
     public static async put(url: string, body: any, params?: Params): Promise<any> {
-        return axios.put(this.baseUrl.concat(url), body)
+        const config = { params };
+        console.log(config);
+        return axios.put(this.baseUrl.concat(url), body, config)
     }
 
     public static async delete(url: string, params?: Params): Promise<any> {

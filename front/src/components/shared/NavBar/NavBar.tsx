@@ -7,6 +7,8 @@ import { CompatClient, Stomp } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
 import { WEB_SOCKET_URL } from "../../../constants/Constants";
 import { useEffect, useState } from "react";
+import { MessageNotification } from "../../../models/notifications/MessageNotification";
+import { formatDateTime } from "../../../utils/formats/DateTimeFormat";
 
 
 export default function NavBar() {
@@ -41,6 +43,8 @@ export default function NavBar() {
               console.log('Connected: ' + frame);
               client.subscribe('/notification/' + user?.username, (message) => {
                 console.log(message.body);
+                let notification: MessageNotification = JSON.parse(message.body);
+                alert(notification.message + " at " + formatDateTime(notification.timestamp))
               });
             });
           
@@ -62,7 +66,9 @@ export default function NavBar() {
                 <LinkStyle to="/home">Home</LinkStyle>
                 { token === null && <LinkStyle to="/login">Login</LinkStyle>}
                 { token === null && <LinkStyle to="/register">Register</LinkStyle>}
-                { !(token === null) && <LinkStyle to="/profile">Profile</LinkStyle>}
+                {/* { !(token === null) && (user?.role === "ADMIN") && <LinkStyle to="/servicearea">Service Areas</LinkStyle> } */}
+                 <LinkStyle to="/servicearea">Service Areas</LinkStyle> 
+                { !(token === null) && (user?.role === "CLIENT") && <LinkStyle to="/profile">Profile</LinkStyle>}
                 { !(token === null) && <Button text={"Logout"} type={"button"} onClickHandler={onLogout} />}
             </NavBarStyle>
             <Outlet/>

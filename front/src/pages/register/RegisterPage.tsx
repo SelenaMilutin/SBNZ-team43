@@ -7,7 +7,7 @@ import { RegisterPageStyle } from "./RegisterPageStyle";
 
 const RegisterPage = () => {
 
-    const [username, setUsername] = useState("");
+    const [username, setUsername] = useState<string>("");
     const [password, setPassword] = useState("");
     const [name, setName] = useState("");
     const [lastName, setLastName] = useState("");

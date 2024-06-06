@@ -15,6 +15,7 @@ end
 rule "Service Area Set"
 when
     $client: Client( $serviceArea: serviceArea != null )
+    not Client( this != $client, serviceArea != null )
 then
     System.out.println("Service area is set to: " + $serviceArea.getId());
     $serviceArea.incrementCurrentCapacity();
@@ -25,6 +26,7 @@ end
 rule "Service Area Set to Null"
 when
     $client: Client( serviceArea == null, $previousServiceArea: previousServiceArea != null )
+    Client( this != $client, serviceArea == null )
 then
     System.out.println("Service area has been set to null");
 
@@ -35,10 +37,30 @@ then
     update($client);
 end
 
-rule "Service Area Became Unavailable"
+rule "Service Area Became Unavailable" salience 1
 when
     $sa: ServiceArea(availableFlag == false)
 then
+    System.out.println("Service area became unavailable: " + $sa.getId());
     $sa.setLastUnavailableTimestamp(LocalDateTime.now());
+    update($sa);
+    System.out.println($sa.getLastUnavailableTimestamp());
     serviceAreaService.notifyUsersAboutUnavailableServiceArea($sa);
+end
+
+rule "Notify Admin If More Than 10% Users Have Unavailable Service Areas And Activate Backup Areas" salience 2
+when
+    $totalClients: Number() from accumulate(
+        $client: Client(),
+        count($client)
+    )
+    $unavailableClients: Number() from accumulate(
+        $client: Client(serviceArea.availableFlag == false),
+        count($client)
+    )
+    eval( ($unavailableClients.doubleValue() / $totalClients.doubleValue()) > 0.10 )
+then
+    System.out.println("More than 10% of users have unavailable service areas.");
+    serviceAreaService.notifyAdminAboutUnavailableServiceAreas();
+    serviceAreaService.activateBackupServiceAreas();
 end

@@ -11,9 +11,9 @@ interface ButtonProps {
 
 
 const Button = ({text, type, onClickHandler}: ButtonProps) => {
-    return <>
-        <ButtonStyle onClick={onClickHandler} type={type}>{text}</ButtonStyle>
-    </>
+
+    return <ButtonStyle onClick={onClickHandler} type={type}>{text}</ButtonStyle>
+    
 }
 
 export default Button;

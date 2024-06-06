@@ -15,4 +15,6 @@ public interface ServiceAreaRepository extends JpaRepository<ServiceArea, Long> 
     @Query("SELECT sa FROM ServiceArea sa WHERE sa.currentCapacity < sa.maximumCapacity")
     List<ServiceArea> findServiceAreasWithAvailableCapacity();
 
+    List<ServiceArea> findServiceAreasByBackupFlag(boolean flag);
+
 }
