@@ -1,6 +1,7 @@
 package com.ftn.sbnz.service.contract.service;
 
 import com.ftn.sbnz.model.contract.Contract;
+import com.ftn.sbnz.model.contract.service.IContractService;
 import com.ftn.sbnz.model.servicearea.ServiceArea;
 import com.ftn.sbnz.model.user.Client;
 import com.ftn.sbnz.model.user.Discount;
@@ -103,8 +104,16 @@ public class ContractDroolsService {
         }
     }
 
-    public void fireAllRules(IAppUserService globalAppUserService) {
-        forwardContractKsession.setGlobal("appUserService", globalAppUserService);
+    public void deleteDiscountFact(Discount discount) {
+        FactHandle handle = discountHandles.get(discount.getId());
+        if (handle != null) {
+            forwardContractKsession.delete(handle);
+            discountHandles.remove(discount.getId());
+        }
+    }
+
+    public void fireAllRules(IContractService globalContractService) {
+        forwardContractKsession.setGlobal("contractService", globalContractService);
         testKieSessionFactsAndRules(forwardContractKsession);
         forwardContractKsession.fireAllRules();
     }

@@ -9,4 +9,8 @@ public interface IContractService {
 
     ContractDTO create(CreateContractDTO contract, Client client);
 
+    void createDiscount(Contract contract, int numberOfPreviousContracts);
+
+    void applyDiscount(Contract contract);
+
 }

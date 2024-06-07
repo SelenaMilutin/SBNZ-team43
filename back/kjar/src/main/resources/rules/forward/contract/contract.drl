@@ -5,13 +5,13 @@ import com.ftn.sbnz.model.contract.ContractProposal;
 import com.ftn.sbnz.model.packages.Packages;
 import com.ftn.sbnz.model.user.Client;
 import com.ftn.sbnz.model.user.Discount;
-import com.ftn.sbnz.model.user.IAppUserService;
+import com.ftn.sbnz.model.contract.service.IContractService;
 import com.ftn.sbnz.model.servicearea.ServiceArea;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.ArrayList;
 
-global IAppUserService appUserService;
+global IContractService contractService;
 
 rule "Contract Exists" salience 100
 when
@@ -30,15 +30,16 @@ end
 
 rule "Contract Has Expired And No Discount Exists" salience 9
 when
-    $contract: Contract(activeFlag == false, $client: client)
+    $contract: Contract(activeFlag == false, $client: client, proccessedFlag == false)
     $numberOfPrevoiusExpiredContracts: Number() from accumulate(
-            $previousContract: Contract(client.id == $client.id, activeFlag == false),
+            $previousContract: Contract(this != $contract, client.id == $client.id, activeFlag == false, proccessedFlag == true),
             count($previousContract)
         )
     not (Discount(client.id == $client.id))
 then
     System.out.println(String.format("Making new discount because Contract (%s) for client (%s) has expired", $contract.getId(),  $client.getUsername()));
-    appUserService.createDiscount($numberOfPrevoiusExpiredContracts.intValue(), $client);
+    modify($contract){setProccessedFlag(true)}
+    contractService.createDiscount($contract, $numberOfPrevoiusExpiredContracts.intValue());
 end
 
 

@@ -42,6 +42,8 @@ public class Contract {
 
     private double discount; // ako je ostvario neki popust
 
+    private boolean proccessedFlag = false;
+
     public boolean isInFirstHalf(){
 
         long durationInMinutes = ChronoUnit.MINUTES.between(this.startDate, this.expirationDate);
