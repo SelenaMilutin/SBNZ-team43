@@ -7,6 +7,7 @@ import org.kie.api.KieServices;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +23,7 @@ public class ServiceAreaTest {
         KieSession ksession = kContainer.newKieSession("forwardKsession");
 
         List<Client> clients = new ArrayList<>();
-        ServiceArea sa = new ServiceArea(1L, true, true, false, 50, 0, clients );
+        ServiceArea sa = new ServiceArea();
         Client c = new Client();
 
         c.setServiceArea(sa);
@@ -42,7 +43,7 @@ public class ServiceAreaTest {
         Client c = new Client();
         List<Client> clients = new ArrayList<>();
         clients.add(c);
-        ServiceArea sa = new ServiceArea(1L, true, true, false, 50, 1, clients );
+        ServiceArea sa = new ServiceArea(1L, true, true, true, 0, 0, LocalDateTime.now(), clients);
         c.setServiceArea(null);
         c.setPreviousServiceArea(sa);
 

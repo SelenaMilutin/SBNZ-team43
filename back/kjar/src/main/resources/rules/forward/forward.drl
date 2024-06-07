@@ -3,11 +3,17 @@ package rules.forward;
 import com.ftn.sbnz.model.contract.Contract;
 import com.ftn.sbnz.model.contract.ContractProposal;
 import com.ftn.sbnz.model.packages.Packages;
+import com.ftn.sbnz.model.contract.events.NewContractCreation;
 import com.ftn.sbnz.model.user.Client;
 import com.ftn.sbnz.model.servicearea.ServiceArea;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Collection;
+
+global LocalDateTime timeBoundry;
+global Collection<NewContractCreation> contractCreations;
+
 
 rule "Exists"
 when
@@ -18,7 +24,8 @@ end
 
 rule "ExpiredContractNotification"
 when
-    $contract: Contract(activeFlag == false, $client: client)
+    $contract: Contract(activeFlag == false, $client: client, $type: packages.packageType)
+    not (Contract(activeFlag == true, client == $client, packages.packageType == $type))
 then
     // Send notification
     $client.setName("alala");
