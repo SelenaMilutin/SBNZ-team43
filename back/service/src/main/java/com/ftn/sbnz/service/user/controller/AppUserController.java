@@ -1,7 +1,7 @@
 package com.ftn.sbnz.service.user.controller;
 
-import com.ftn.sbnz.service.user.dto.UserProfileDTO;
-import com.ftn.sbnz.service.user.service.IAppUserService;
+import com.ftn.sbnz.model.user.UserProfileDTO;
+import com.ftn.sbnz.model.user.IAppUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

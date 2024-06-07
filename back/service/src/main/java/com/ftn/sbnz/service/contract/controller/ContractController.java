@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ftn.sbnz.service.contract.service.IContractService;
+import com.ftn.sbnz.model.contract.service.IContractService;
 
 @CrossOrigin(origins = {"http://localhost:4200", "http://localhost"})
 @RestController

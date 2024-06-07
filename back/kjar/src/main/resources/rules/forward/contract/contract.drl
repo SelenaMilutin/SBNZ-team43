@@ -1,0 +1,68 @@
+package rules.forward.contract;
+
+import com.ftn.sbnz.model.contract.Contract;
+import com.ftn.sbnz.model.contract.ContractProposal;
+import com.ftn.sbnz.model.packages.Packages;
+import com.ftn.sbnz.model.user.Client;
+import com.ftn.sbnz.model.user.Discount;
+import com.ftn.sbnz.model.user.IAppUserService;
+import com.ftn.sbnz.model.servicearea.ServiceArea;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.ArrayList;
+
+global IAppUserService appUserService;
+
+rule "Contract Exists" salience 100
+when
+    Contract()
+then
+    System.out.println("A contract exits");
+end
+
+rule "Contract Has Expired" salience 10
+when
+    $contract: Contract(activeFlag == true, expirationDate.isBefore(LocalDateTime.now()), $client: client)
+then
+    System.out.println(String.format("Contract (%s) for client (%s) has expired", $contract.getId(),  $client.getUsername()));
+    modify($contract){setActiveFlag(false)}
+end
+
+rule "Contract Has Expired And No Discount Exists" salience 9
+when
+    $contract: Contract(activeFlag == false, $client: client)
+    $numberOfPrevoiusExpiredContracts: Number() from accumulate(
+            $previousContract: Contract(client.id == $client.id, activeFlag == false),
+            count($previousContract)
+        )
+    not (Discount(client.id == $client.id))
+then
+    System.out.println(String.format("Making new discount because Contract (%s) for client (%s) has expired", $contract.getId(),  $client.getUsername()));
+    appUserService.createDiscount($numberOfPrevoiusExpiredContracts.intValue(), $client);
+end
+
+
+//rule "Switch To Similar Package Trial Period"
+//when
+//    $client: Client(
+//        $contractProposal: contractProposal != null
+//    )
+//    not (Contract(client == $client, activeFlag == true))
+//    $package: Packages(
+//        packageType == $contractProposal.getPackages().getPackageType()
+//       // this != $contractProposal.getPackages()
+//    )
+//then
+//    Contract newContract = new Contract();
+//    newContract.setClient($client);
+//    newContract.setPackages($package);
+//    newContract.setExpirationDate(LocalDateTime.now().plusDays(14));
+//    newContract.setActiveFlag(true);
+//
+//    List<Contract> contracts = new ArrayList<>($client.getContracts());
+//    contracts.add(newContract);
+//    $client.setContracts(contracts);
+//    $client.setContractProposal(null);
+//
+//    update($client);
+//end

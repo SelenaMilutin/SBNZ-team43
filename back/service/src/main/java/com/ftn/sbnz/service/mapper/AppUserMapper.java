@@ -3,7 +3,7 @@ package com.ftn.sbnz.service.mapper;
 import com.ftn.sbnz.model.user.Client;
 import com.ftn.sbnz.model.user.Role;
 import com.ftn.sbnz.service.auth.dto.CreateUserDTO;
-import com.ftn.sbnz.service.user.dto.UserProfileDTO;
+import com.ftn.sbnz.model.user.UserProfileDTO;
 import org.springframework.stereotype.Component;
 
 @Component

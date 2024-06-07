@@ -11,4 +11,7 @@
     <kbase name="forwardServiceareaKbase" packages="rules.forward.servicearea">
         <ksession name="forwardServiceareaKsession"/>
     </kbase>
+    <kbase name="forwardContractKbase" packages="rules.forward.contract">
+        <ksession name="forwardContractKsession"/>
+    </kbase>
 </kmodule>

@@ -1,4 +1,4 @@
-package com.ftn.sbnz.service.user.dto;
+package com.ftn.sbnz.model.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

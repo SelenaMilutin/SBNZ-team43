@@ -170,7 +170,7 @@ public class ServiceAreaService implements IServiceAreaService {
     @Scheduled(fixedDelay = 60 * 1000) // 1 minute
     public void updateHandleForServiceAreaAvailability() {
         try {
-            System.out.println("Scheduled task executed at " + LocalDateTime.now());
+            System.out.println("Scheduled task for service area executed at " + LocalDateTime.now());
             for (ServiceArea area : serviceAreaRepository.findServiceAreasByAvailableFlag(false)) {
                 insertOrUpdateServiceAreaFact(area);
                 System.out.println("Service area is unavailable, from " + area.getLastUnavailableTimestamp());
@@ -181,7 +181,6 @@ public class ServiceAreaService implements IServiceAreaService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     private void testKieSessionFactsAndRules(KieSession kieSession) {
