@@ -44,7 +44,7 @@ export default function NavBar() {
               client.subscribe('/notification/' + user?.username, (message) => {
                 console.log(message.body);
                 let notification: MessageNotification = JSON.parse(message.body);
-                alert(notification.message + " at " + formatDateTime(notification.timestamp))
+                alert(notification.message + " at " + formatDateTime(new Date(notification.timestamp)))
               });
             });
           

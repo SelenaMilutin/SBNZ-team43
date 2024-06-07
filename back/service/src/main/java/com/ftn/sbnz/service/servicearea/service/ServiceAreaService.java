@@ -15,14 +15,15 @@ import com.ftn.sbnz.service.user.repository.ClientRepository;
 import lombok.RequiredArgsConstructor;
 import org.kie.api.KieBase;
 import org.kie.api.definition.rule.Rule;
-import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.rule.FactHandle;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.ftn.sbnz.service.servicearea.repository.ServiceAreaRepository;
 
+import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -36,35 +37,39 @@ public class ServiceAreaService implements IServiceAreaService {
     private final ServiceAreaRepository serviceAreaRepository;
     private final ClientRepository clientRepository;
     private final AdminRepository adminRepository;
-    private final KieContainer kieContainer;
     private final SimpMessagingTemplate simpMessagingTemplate;
     private final NotificationMapper notificationMapper;
     private final Random random = new Random();
     private final ServiceAreaMapper serviceAreaMapper;
     private final KieSession forwardServiceareaKsession;
-    private Map<Object, FactHandle> factHandles = new HashMap<>();
+//    private Map<Object, FactHandle> factHandles = new HashMap<>();
+    private Map<Long, FactHandle> clientHandles;
+    private Map<Long, FactHandle> serviceAreaHandles;
+
+    @PostConstruct
+    private void init() {
+        this.clientHandles = fillClientHandles();
+        this.serviceAreaHandles = fillServiceAreaHandles();
+    }
 
     @Override
     public void assignServiceAreaToUser(Client client) {
         ServiceArea serviceArea = selectAvailableServiceArea().orElseThrow(NoServiceAreaAvailableException::new);
         client.setServiceArea(serviceArea);
+        insertOrUpdateClientFact(client);
+        insertOrUpdateServiceAreaFact(serviceArea);
 
-//        KieSession kieSession = kieContainer.newKieSession("forwardServiceareaKsession");
-        insertOrUpdateFact(client);
-        insertOrUpdateFact(serviceArea);
         testKieSessionFactsAndRules(forwardServiceareaKsession);
+        forwardServiceareaKsession.setGlobal("serviceAreaService", this);
         forwardServiceareaKsession.fireAllRules();
         serviceAreaRepository.save(serviceArea);
-        deleteFact(serviceArea);
-        deleteFact(serviceArea);
         clientRepository.save(client);
-//        forwardServiceareaKsession.dispose();
     }
 
     private Optional<ServiceArea> selectAvailableServiceArea() {
-        List<ServiceArea> areaList = serviceAreaRepository.findServiceAreasWithLessThan50PercentCapacity();
+        List<ServiceArea> areaList = serviceAreaRepository.findAvailableServiceAreasWithLessThan50PercentCapacity();
         if (areaList.isEmpty()) {
-            areaList = serviceAreaRepository.findServiceAreasWithAvailableCapacity();
+            areaList = serviceAreaRepository.findAvailableServiceAreasWithAvailableCapacity();
             if (areaList.isEmpty()) {
                 return Optional.empty();
             }
@@ -75,7 +80,8 @@ public class ServiceAreaService implements IServiceAreaService {
     @Override
     public void notifyUsersAboutUnavailableServiceArea(ServiceArea serviceArea) {
         NotificationDTO notificationDTO = notificationMapper.mapToServiceAreaUnavailableNotification(LocalDateTime.now());
-        for (Client client : serviceArea.getClients()) {
+        List<Client> clients = clientRepository.findClientsByServiceAreaId(serviceArea.getId());
+        for (Client client : clients) {
             this.simpMessagingTemplate.convertAndSend(
                     NOTIFICATION_PREFIX + "/" + client.getUsername(),
                     notificationDTO);
@@ -83,28 +89,11 @@ public class ServiceAreaService implements IServiceAreaService {
     }
 
     @Override
-    public ServiceAreaDTO setServiceAreaAvailability(Long serviceAreaId, boolean availability) {
-        ServiceArea serviceArea = serviceAreaRepository.findById(serviceAreaId).orElseThrow(
-                () -> new ServiceAreaDoesNotExistException(serviceAreaId)
-        );
-        serviceArea.setAvailableFlag(availability);
-        serviceAreaRepository.save(serviceArea);
-
-//        KieSession kieSession = kieContainer.newKieSession("forwardServiceareaKsession");
-        forwardServiceareaKsession.setGlobal("serviceAreaService", this);
-        insertOrUpdateFact(serviceArea);
-        for (Client client : clientRepository.findAll()) {
-            insertOrUpdateFact(client);
-        }
-        testKieSessionFactsAndRules(forwardServiceareaKsession);
-        forwardServiceareaKsession.fireAllRules();
-        serviceAreaRepository.save(serviceArea);
-//        forwardServiceareaKsession.dispose();
-        deleteFact(serviceArea);
-        for (Client client : clientRepository.findAll()) {
-            deleteFact(client);
-        }
-        return serviceAreaMapper.mapAreaToDTO(serviceArea);
+    public void notifyClientAboutServiceAreaChange(Client client) {
+        NotificationDTO notificationDTO = notificationMapper.mapToServiceAreaChanged(LocalDateTime.now(), client.getServiceArea());
+        this.simpMessagingTemplate.convertAndSend(
+                    NOTIFICATION_PREFIX + "/" + client.getUsername(),
+                    notificationDTO);
     }
 
     @Override
@@ -118,6 +107,26 @@ public class ServiceAreaService implements IServiceAreaService {
     }
 
     @Override
+    public ServiceAreaDTO setServiceAreaAvailability(Long serviceAreaId, boolean availability) {
+        ServiceArea serviceArea = serviceAreaRepository.findById(serviceAreaId).orElseThrow(
+                () -> new ServiceAreaDoesNotExistException(serviceAreaId)
+        );
+        serviceArea.setAvailableFlag(availability);
+        if (availability) {
+            serviceArea.setLastUnavailableTimestamp(null);
+        }
+        serviceAreaRepository.save(serviceArea);
+        insertOrUpdateServiceAreaFact(serviceArea);
+
+        forwardServiceareaKsession.setGlobal("serviceAreaService", this);
+        testKieSessionFactsAndRules(forwardServiceareaKsession);
+        forwardServiceareaKsession.fireAllRules();
+        serviceAreaRepository.save(serviceArea);
+
+        return serviceAreaMapper.mapAreaToDTO(serviceArea);
+    }
+
+    @Override
     public void activateBackupServiceAreas() {
         List<ServiceArea> backupAreas = serviceAreaRepository.findServiceAreasByBackupFlag(true);
         for (ServiceArea serviceArea : backupAreas) {
@@ -125,11 +134,44 @@ public class ServiceAreaService implements IServiceAreaService {
             serviceArea.setAvailableFlag(true);
         }
         serviceAreaRepository.saveAll(backupAreas);
+        for (ServiceArea area : backupAreas) {
+            insertOrUpdateServiceAreaFact(area);
+        }
     }
 
     @Override
     public List<ServiceAreaDTO> getAllServiceAreas() {
         return serviceAreaMapper.mapAreasToDTOs(serviceAreaRepository.findAll());
+    }
+
+    @Override
+    public void moveClientsToAvailableServiceAreasWithCapacityBelow90Percent(ServiceArea serviceArea) {
+
+        List<Client> clients = clientRepository.findClientsByServiceAreaId(serviceArea.getId());
+        for (Client client : clients) {
+            ServiceArea newServiceArea = selectAvailableServiceArea().orElseThrow(NoServiceAreaAvailableException::new);
+            client.setPreviousServiceArea(null);
+            serviceArea.decrementCurrentCapacity();
+            client.setServiceArea(newServiceArea);
+            clientRepository.save(client);
+            serviceAreaRepository.save(serviceArea);
+            insertOrUpdateClientFact(client);
+            forwardServiceareaKsession.setGlobal("serviceAreaService", this);
+            forwardServiceareaKsession.fireAllRules();
+        }
+
+    }
+
+    @Scheduled(fixedDelay = 20*1000) // 180000 milliseconds = 3 minutes
+    public void updateHandleForServiceAreaAvailability() {
+        System.out.println("Scheduled task executed at " + LocalDateTime.now());
+        for (ServiceArea area : serviceAreaRepository.findServiceAreasByAvailableFlag(false)) {
+            insertOrUpdateServiceAreaFact(area);
+            System.out.println("Service area is unavailable, from " + area.getLastUnavailableTimestamp());
+            testKieSessionFactsAndRules(forwardServiceareaKsession);
+            forwardServiceareaKsession.setGlobal("serviceAreaService", this);
+            forwardServiceareaKsession.fireAllRules();
+        }
     }
 
     private void testKieSessionFactsAndRules(KieSession kieSession) {
@@ -151,21 +193,61 @@ public class ServiceAreaService implements IServiceAreaService {
 
     }
 
-    private void insertOrUpdateFact(Object object) {
-        FactHandle handle = factHandles.get(object);
+//    private void insertOrUpdateFact(Object object) {
+//        FactHandle handle = factHandles.get(object);
+//        if (handle == null) {
+//            handle = forwardServiceareaKsession.insert(object);
+//            factHandles.put(object, handle);
+//        } else {
+//            forwardServiceareaKsession.update(handle, object);
+//        }
+//    }
+//
+//    private void deleteFact(Object object) {
+//        FactHandle handle = factHandles.get(object);
+//        if (handle != null) {
+//            forwardServiceareaKsession.delete(handle);
+//            factHandles.remove(object);
+//        }
+//    }
+
+    private Map<Long, FactHandle> fillClientHandles() {
+        List<Client> clients = clientRepository.findAll();
+        Map<Long, FactHandle> clientMap = new HashMap<>();
+        for (Client client : clients) {
+            FactHandle handle = forwardServiceareaKsession.insert(client);
+            clientMap.put(client.getId(), handle);
+        }
+        return clientMap;
+    }
+
+    private Map<Long, FactHandle> fillServiceAreaHandles() {
+        List<ServiceArea> serviceAreas = serviceAreaRepository.findAll();
+        Map<Long, FactHandle> serviceAreaMap = new HashMap<>();
+        for (ServiceArea area : serviceAreas) {
+            FactHandle handle = forwardServiceareaKsession.insert(area);
+            serviceAreaMap.put(area.getId(), handle);
+        }
+        return serviceAreaMap;
+    }
+
+    private void insertOrUpdateClientFact(Client client) {
+        FactHandle handle = clientHandles.get(client.getId());
         if (handle == null) {
-            handle = forwardServiceareaKsession.insert(object);
-            factHandles.put(object, handle);
+            handle = forwardServiceareaKsession.insert(client);
+            clientHandles.put(client.getId(), handle);
         } else {
-            forwardServiceareaKsession.update(handle, object);
+            forwardServiceareaKsession.update(handle, client);
         }
     }
 
-    private void deleteFact(Object object) {
-        FactHandle handle = factHandles.get(object);
-        if (handle != null) {
-            forwardServiceareaKsession.delete(handle);
-            factHandles.remove(object);
+    private void insertOrUpdateServiceAreaFact(ServiceArea serviceArea) {
+        FactHandle handle = serviceAreaHandles.get(serviceArea.getId());
+        if (handle == null) {
+            handle = forwardServiceareaKsession.insert(serviceArea);
+            serviceAreaHandles.put(serviceArea.getId(), handle);
+        } else {
+            forwardServiceareaKsession.update(handle, serviceArea);
         }
     }
 }

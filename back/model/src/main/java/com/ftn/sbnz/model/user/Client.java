@@ -17,7 +17,6 @@ import com.ftn.sbnz.model.servicearea.ServiceArea;
 @Getter
 @Setter
 @Entity
-@ToString
 @Table(name = "client")
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Client extends AppUser {
@@ -51,4 +50,8 @@ public class Client extends AppUser {
         return this.serviceArea != null;
     }
 
+    @Override
+    public String toString() {
+        return "Client id " + this.getId() + " username " + this.getUsername();
+    }
 }

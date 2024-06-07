@@ -15,7 +15,7 @@ import javax.persistence.Table;
 @Setter
 @ToString
 @Entity
-@Table(name = "admin")
+@Table(name = "adminn")
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Admin extends AppUser{
 }

@@ -10,6 +10,8 @@ public interface IServiceAreaService {
 
     void notifyUsersAboutUnavailableServiceArea(ServiceArea serviceArea);
 
+    void notifyClientAboutServiceAreaChange(Client client);
+
     ServiceAreaDTO setServiceAreaAvailability(Long serviceAreaId, boolean availability);
 
     void notifyAdminAboutUnavailableServiceAreas();
@@ -17,5 +19,7 @@ public interface IServiceAreaService {
     void activateBackupServiceAreas();
 
     List<ServiceAreaDTO> getAllServiceAreas();
+
+    void moveClientsToAvailableServiceAreasWithCapacityBelow90Percent(ServiceArea serviceArea);
 
 }
