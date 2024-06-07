@@ -127,15 +127,20 @@ public class ServiceAreaService implements IServiceAreaService {
     }
 
     @Override
-    public void activateBackupServiceAreas() {
+    public void toggleActiveFlagForBackupServiceAreas(boolean active) {
         List<ServiceArea> backupAreas = serviceAreaRepository.findServiceAreasByBackupFlag(true);
         for (ServiceArea serviceArea : backupAreas) {
-            serviceArea.setActiveFlag(true);
-            serviceArea.setAvailableFlag(true);
+            serviceArea.setActiveFlag(active);
+            serviceArea.setAvailableFlag(active);
+            if (active == false) {
+                serviceArea.setLastUnavailableTimestamp(null);
+            }
         }
         serviceAreaRepository.saveAll(backupAreas);
         for (ServiceArea area : backupAreas) {
             insertOrUpdateServiceAreaFact(area);
+            forwardServiceareaKsession.setGlobal("serviceAreaService", this);
+            forwardServiceareaKsession.fireAllRules();
         }
     }
 
@@ -162,16 +167,21 @@ public class ServiceAreaService implements IServiceAreaService {
 
     }
 
-    @Scheduled(fixedDelay = 20*1000) // 180000 milliseconds = 3 minutes
+    @Scheduled(fixedDelay = 60 * 1000) // 1 minute
     public void updateHandleForServiceAreaAvailability() {
-        System.out.println("Scheduled task executed at " + LocalDateTime.now());
-        for (ServiceArea area : serviceAreaRepository.findServiceAreasByAvailableFlag(false)) {
-            insertOrUpdateServiceAreaFact(area);
-            System.out.println("Service area is unavailable, from " + area.getLastUnavailableTimestamp());
-            testKieSessionFactsAndRules(forwardServiceareaKsession);
-            forwardServiceareaKsession.setGlobal("serviceAreaService", this);
-            forwardServiceareaKsession.fireAllRules();
+        try {
+            System.out.println("Scheduled task executed at " + LocalDateTime.now());
+            for (ServiceArea area : serviceAreaRepository.findServiceAreasByAvailableFlag(false)) {
+                insertOrUpdateServiceAreaFact(area);
+                System.out.println("Service area is unavailable, from " + area.getLastUnavailableTimestamp());
+                testKieSessionFactsAndRules(forwardServiceareaKsession);
+                forwardServiceareaKsession.setGlobal("serviceAreaService", this);
+                forwardServiceareaKsession.fireAllRules();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
     }
 
     private void testKieSessionFactsAndRules(KieSession kieSession) {

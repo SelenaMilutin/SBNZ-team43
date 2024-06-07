@@ -16,7 +16,7 @@ public interface IServiceAreaService {
 
     void notifyAdminAboutUnavailableServiceAreas();
 
-    void activateBackupServiceAreas();
+    void toggleActiveFlagForBackupServiceAreas(boolean active);
 
     List<ServiceAreaDTO> getAllServiceAreas();
 

@@ -1,5 +1,6 @@
 package rules.forward.servicearea;
 import java.time.LocalDateTime;
+import java.util.List;
 import com.ftn.sbnz.model.user.Client;
 import com.ftn.sbnz.model.servicearea.ServiceArea;
 import com.ftn.sbnz.model.servicearea.IServiceAreaService;
@@ -66,7 +67,7 @@ when
 then
     System.out.println("More than 10% of users have unavailable service areas.");
     serviceAreaService.notifyAdminAboutUnavailableServiceAreas();
-    serviceAreaService.activateBackupServiceAreas();
+    serviceAreaService.toggleActiveFlagForBackupServiceAreas(true);
 end
 
 rule "Service Area Is Unavailable For More Than 1 Minutes" salience 11
@@ -75,4 +76,20 @@ when
 then
     System.out.println("Service area unavailable for more than 1 minutes: " + $sa.getId());
     serviceAreaService.moveClientsToAvailableServiceAreasWithCapacityBelow90Percent($sa);
+end
+
+rule "All Areas Available And With Capacity Under 70%"
+when
+    $activeServiceAreas: List() from accumulate(
+        $sa: ServiceArea(backupFlag == false, availableFlag == true, (currentCapacity / maximumCapacity) <= 0.7),
+        collectList($sa)
+    )
+    $totalNonBackupServiceAreas: Number() from accumulate(
+        $sa: ServiceArea(backupFlag == false),
+        count($sa)
+    )
+    eval($totalNonBackupServiceAreas.intValue() == $activeServiceAreas.size())
+then
+    System.out.println("All active non-backup service areas have capacity under 70%.");
+    serviceAreaService.toggleActiveFlagForBackupServiceAreas(false);
 end
