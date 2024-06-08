@@ -24,7 +24,7 @@ public class ComplaintController {
     private final IComplaintService complaintService;
     private final JWTService jwtService;
 
-    @GetMapping
+    @GetMapping("/technicalissues")
     ResponseEntity<List<IssueAndSolution>> findIssueAndSolution(@RequestParam String issueConsequence) {
 
 //        AppUser user = (AppUser) jwtService.getAuthenticatedUser();

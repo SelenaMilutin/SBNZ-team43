@@ -80,7 +80,11 @@ public class ComplaintService implements IComplaintService {
         solutions.put("Router is faulty", "Contact operater for router change");
 
         issueList.add(new RecursiveTechnicalIssue("Router activity lamp indicator not on", "Router not working"));
+        issueList.add(new RecursiveTechnicalIssue("Router has overheated", "Router activity lamp indicator not on"));
+        issueList.add(new RecursiveTechnicalIssue("Router has encountered a bug", "Router activity lamp indicator not on"));
         solutions.put("Router activity lamp indicator not on", "Reset router by pressing power button");
+        solutions.put("Router has overheated", "Reset router by pressing power button");
+        solutions.put("Router has encountered a bug", "Reset router by pressing power button");
 
         issueList.add(new RecursiveTechnicalIssue("Unavailable internet connection", "Problems with internet"));
         solutions.put("Unavailable internet connection", "Try following further solutions for diagnosing");
@@ -90,8 +94,33 @@ public class ComplaintService implements IComplaintService {
         solutions.put("Wifi regime on device is turned off", "Turn on device's wifi regime");
         issueList.add(new RecursiveTechnicalIssue("Wifi password entered is incorrect", "Device is not connected to router's wifi"));
         solutions.put("Wifi password entered is incorrect", "Check for correct password and try entering it again");
-        issueList.add(new RecursiveTechnicalIssue("Service area is unavailable", "Unavailable internet connection"));
+        issueList.add(new RecursiveTechnicalIssue("Can't establish connection with service area", "Unavailable internet connection"));
+        solutions.put("Can't establish connection with service area", "Check service area availability on profile page and wait for availability return");
+        issueList.add(new RecursiveTechnicalIssue("Service area is unavailable", "Can't establish connection with service area"));
+        issueList.add(new RecursiveTechnicalIssue("Account may be blocked", "Can't establish connection with service area"));
         solutions.put("Service area is unavailable", "Check service area availability on profile page and wait for availability return");
+        solutions.put("Account may be blocked", "Check account blocked status on profile page, or contact operator for more information");
+
+
+        issueList.add(new RecursiveTechnicalIssue("Low signal range", "Service and signal range problems"));
+        solutions.put("Low signal range", "Try following further solutions for diagnosing");
+        issueList.add(new RecursiveTechnicalIssue("You are possibly within great distance of signal zone", "Low signal range"));
+        solutions.put("You are possibly within great distance of signal zone", "Check out our signal zone page and find out where you can go to get into a zone with reception");
+
+        issueList.add(new RecursiveTechnicalIssue("No signal reception", "Service and signal range problems"));
+        solutions.put("No signal reception", "Try following further solutions for diagnosing");
+        issueList.add(new RecursiveTechnicalIssue("Service area's unavailable", "No signal reception"));
+        solutions.put("Service area's unavailable", "Check service area availability on profile page and wait for availability return");
+        issueList.add(new RecursiveTechnicalIssue("Your device is in a zone without reception", "No signal reception"));
+        solutions.put("Your device is in a zone without reception", "Check out our signal zone page and find out where you can go to get into a zone with reception");
+
+        issueList.add(new RecursiveTechnicalIssue("Phone can't receive reception", "Service and signal range problems"));
+        solutions.put("Phone can't receive reception", "Try following further solutions for diagnosing");
+        issueList.add(new RecursiveTechnicalIssue("Phone is in Flight regime/Airplane mode", "Phone can't receive reception"));
+        solutions.put("Phone is in Flight regime/Airplane mode", "Switch the regime off and restart phone");
+        issueList.add(new RecursiveTechnicalIssue("SIM card is not properly inserted", "Phone can't receive reception"));
+        solutions.put("SIM card is not properly inserted", "After turning phone off, carefully remove and re-insert SIM, and turn phone on again");
+
 
         for (RecursiveTechnicalIssue issue : issueList) {
             bwTechnicalissueKsession.insert(issue);

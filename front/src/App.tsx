@@ -9,6 +9,7 @@ import ProfilePage from "./pages/profile/ProfilePage";
 import LandingPage from "./pages/landing/LandingPage";
 import ServiceAreaPage from "./pages/servicearea/ServiceAreasPage";
 import CreateContractPage from "./pages/contract/CreateContractPage";
+import TechnicalIssuesPage from "./pages/technicalissues/TechnicalIssuesPage";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
                 <Route path="profile" element={<ProfilePage/>}/>
                 <Route path="servicearea" element={<ServiceAreaPage/>}/>
                 <Route path="contract/create" element={<CreateContractPage/>}/>
+                <Route path="technicalissue" element={<TechnicalIssuesPage/>}/>
               </Route>
           </Routes>
         </AuthProvider>

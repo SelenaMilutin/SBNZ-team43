@@ -70,6 +70,8 @@ export default function NavBar() {
                  <LinkStyle to="/servicearea">Service Areas</LinkStyle> 
                 {/* { !(token === null) && (user?.role === "CLIENT") && <LinkStyle to="/contract/create">Create Contract</LinkStyle>} */}
                 { <LinkStyle to="/contract/create">Create Contract</LinkStyle> }
+                {/* { !(token === null) && (user?.role === "CLIENT") && <LinkStyle to="/technicalissue>Help</LinkStyle>} */}
+                { <LinkStyle to="/technicalissue">Help</LinkStyle> }
                 { !(token === null) && (user?.role === "CLIENT") && <LinkStyle to="/profile">Profile</LinkStyle>}
                 { !(token === null) && <Button text={"Logout"} type={"button"} onClickHandler={onLogout} />}
             </NavBarStyle>
