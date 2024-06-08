@@ -11,7 +11,8 @@ import org.kie.api.definition.type.Timestamp;
 import static javax.persistence.InheritanceType.JOINED;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.util.*;
 
 @Getter
 @Setter
@@ -19,12 +20,18 @@ import java.util.Date;
 @Entity
 @Inheritance(strategy=JOINED)
 @Table(name = "technical_issue")
-@Role(Role.Type.EVENT)
-@Timestamp("submitTime")
-@Expires("48h00m")
+//@Role(Role.Type.EVENT)
+//@Timestamp("submitTime")
+//@Expires("48h00m")
 public class TechnicalIssue extends Complaint implements Serializable {
     
     private static final long serialVersionUID = 1L;
-    private Date submitTime;
+    private LocalDateTime submitTime;
+    private String consequence;
+    private transient List<IssueAndSolution> issueAndSolutions = new ArrayList<>();
+
+    public void addIssueAndSolution(String issue, String solution) {
+        issueAndSolutions.add(new IssueAndSolution(issue, solution));
+    }
 
 }

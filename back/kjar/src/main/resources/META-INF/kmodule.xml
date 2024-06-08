@@ -14,4 +14,7 @@
     <kbase name="forwardContractKbase" packages="rules.forward.contract">
         <ksession name="forwardContractKsession"/>
     </kbase>
+    <kbase name="bwTechnicalissueBase" packages="backward.technicalissue">
+        <ksession name="bwTechnicalissueKsession"/>
+    </kbase>
 </kmodule>

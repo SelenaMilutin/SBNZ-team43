@@ -6,7 +6,6 @@ import { UserProfile } from "../../models/users/UserProfile";
 import ContractCardList from "../../components/contract/ContractCardList";
 import { ContractService } from "../../services/ContractService";
 import { Contract } from "../../models/contracts/Contract";
-import { setConstantValue } from "typescript";
 import { CardContent, CardStyle } from "../../components/shared/Card/Card.style";
 import { RowDiv } from "../../components/shared/style/DivStyle";
 

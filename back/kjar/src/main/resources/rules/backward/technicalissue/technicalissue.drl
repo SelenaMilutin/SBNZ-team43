@@ -1,0 +1,23 @@
+package rules.backward.technicalissue;
+
+import com.ftn.sbnz.model.complaint.RecursiveTechnicalIssue;
+import com.ftn.sbnz.model.complaint.TechnicalIssue;
+import com.ftn.sbnz.model.complaint.service.IComplaintService;
+import java.util.HashMap;
+
+global IComplaintService complaintService;
+
+query issueHasConsequence( String issue, String consequence )
+  RecursiveTechnicalIssue( issue, consequence; )
+  or
+  ( RecursiveTechnicalIssue( z, consequence; ) and RecursiveTechnicalIssue( issue, z; ) )
+end
+
+rule "Issue has produced consequence, find issue"
+when
+    $technicalIssue: TechnicalIssue( $consequence: consequence, $client: client )
+    issueHasConsequence(issue, $consequence; )
+then
+    System.out.println( "Found Issue " + issue + " that has resulted in consequence " + $consequence );
+    complaintService.addIssueAndSolutionToList($technicalIssue, issue);
+end

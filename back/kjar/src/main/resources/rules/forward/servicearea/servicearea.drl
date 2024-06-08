@@ -1,4 +1,5 @@
 package rules.forward.servicearea;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import com.ftn.sbnz.model.user.Client;

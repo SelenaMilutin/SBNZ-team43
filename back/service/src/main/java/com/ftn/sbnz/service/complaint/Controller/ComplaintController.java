@@ -1,20 +1,39 @@
 package com.ftn.sbnz.service.complaint.Controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.ftn.sbnz.model.complaint.IssueAndSolution;
+import com.ftn.sbnz.model.user.AppUser;
+import com.ftn.sbnz.service.auth.service.JWTService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import com.ftn.sbnz.service.complaint.service.IComplaintService;
+import com.ftn.sbnz.model.complaint.service.IComplaintService;
 
-@CrossOrigin(origins = {"http://localhost:4200", "http://localhost"})
+import java.util.List;
+
+@RequiredArgsConstructor
+@CrossOrigin(origins = {"http://localhost:3000", "http://localhost"})
 @RestController
-@RequestMapping("/api/complaint")
+@RequestMapping("/api/complaints")
 @Validated
 public class ComplaintController {
     
-    @Autowired
-    private IComplaintService complaintService;
+    private final IComplaintService complaintService;
+    private final JWTService jwtService;
+
+    @GetMapping
+    ResponseEntity<List<IssueAndSolution>> findIssueAndSolution(@RequestParam String issueConsequence) {
+
+//        AppUser user = (AppUser) jwtService.getAuthenticatedUser();
+//        if (user == null) {
+//            throw new AuthenticationCredentialsNotFoundException("User is not authenticated");
+//        }
+
+//        return new ResponseEntity<>(complaintService.diagnoseTechnicalIssue(issueConsequence, user.getUsername()), HttpStatus.OK);
+        return new ResponseEntity<>(complaintService.diagnoseTechnicalIssue(issueConsequence, "a"), HttpStatus.OK);
+    }
 
 }

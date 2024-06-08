@@ -44,12 +44,12 @@ public class DiscountTest {
 //        SessionPseudoClock clock = ksessionCommonRule.getSessionClock();
         Client client = new Client(false, null, null, null, null, null);
         client.setActiveFlag(true);
-        Contract contract1 = new Contract(0L, LocalDateTime.now().minusMonths(12), LocalDateTime.now().plusMonths(2), true, client, new Packages(0L, null, "aaa", 10.0, PackageType.CABLE, true), 0.0);
-        Contract contract2 = new Contract(1L, LocalDateTime.now().minusMonths(12), LocalDateTime.now().plusMonths(2), true, client, new Packages(0L, null, "aaa", 10.0, PackageType.CABLE, true), 0.0);
-        Contract contract3 = new Contract(2L, LocalDateTime.now().minusMonths(12), LocalDateTime.now().plusMonths(2), true, client, new Packages(0L, null, "aaa", 10.0, PackageType.CABLE, true), 0.0);
-        Contract contract4 = new Contract(3L, LocalDateTime.now().minusMonths(12), LocalDateTime.now().plusMonths(2), true, client, new Packages(0L, null, "aaa", 10.0, PackageType.CABLE, true), 0.0);
-        Contract contract5 = new Contract(3L, LocalDateTime.now().minusMonths(12), LocalDateTime.now().plusMonths(2), true, client, new Packages(0L, null, "aaa", 10.0, PackageType.CABLE, true), 0.0);
-        Contract contract6 = new Contract(3L, LocalDateTime.now().minusMonths(12), LocalDateTime.now().plusMonths(2), true, client, new Packages(0L, null, "aaa", 10.0, PackageType.CABLE, true), 0.0);
+        Contract contract1 = new Contract(0L, LocalDateTime.now().minusMonths(12), LocalDateTime.now().plusMonths(2), true, client, new Packages(0L, null, "aaa", 10.0, PackageType.CABLE, true), 0.0, false);
+        Contract contract2 = new Contract(1L, LocalDateTime.now().minusMonths(12), LocalDateTime.now().plusMonths(2), true, client, new Packages(0L, null, "aaa", 10.0, PackageType.CABLE, true), 0.0, false);
+        Contract contract3 = new Contract(2L, LocalDateTime.now().minusMonths(12), LocalDateTime.now().plusMonths(2), true, client, new Packages(0L, null, "aaa", 10.0, PackageType.CABLE, true), 0.0, false);
+        Contract contract4 = new Contract(3L, LocalDateTime.now().minusMonths(12), LocalDateTime.now().plusMonths(2), true, client, new Packages(0L, null, "aaa", 10.0, PackageType.CABLE, true), 0.0, false);
+        Contract contract5 = new Contract(3L, LocalDateTime.now().minusMonths(12), LocalDateTime.now().plusMonths(2), true, client, new Packages(0L, null, "aaa", 10.0, PackageType.CABLE, true), 0.0, false);
+        Contract contract6 = new Contract(3L, LocalDateTime.now().minusMonths(12), LocalDateTime.now().plusMonths(2), true, client, new Packages(0L, null, "aaa", 10.0, PackageType.CABLE, true), 0.0, false);
         Discount dis = new Discount(0L, client, 0.1);
 //        Customer customer1 = new Customer(1L, 19);
 //        Customer customer2 = new Customer(2L, 27);
