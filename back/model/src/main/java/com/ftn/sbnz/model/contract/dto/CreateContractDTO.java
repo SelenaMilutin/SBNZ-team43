@@ -9,7 +9,7 @@ import lombok.*;
 @ToString
 public class CreateContractDTO {
 
-    private String packageId;
+    private Long packageId;
     private int lengthInMonths;
 
 }

@@ -10,4 +10,6 @@ import java.util.ArrayList;
 public interface ContractRepository extends JpaRepository<Contract, Long> {
 
     ArrayList<Contract> findByExpirationDateBetween(LocalDateTime from, LocalDateTime to);
+
+    ArrayList<Contract> findContractsByClientId(Long clientId);
 }

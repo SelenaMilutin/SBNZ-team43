@@ -1,5 +1,6 @@
 package com.ftn.sbnz.model.contract.dto;
 
+import com.ftn.sbnz.model.packages.dto.PackageDTO;
 import lombok.*;
 
 import java.time.LocalDateTime;

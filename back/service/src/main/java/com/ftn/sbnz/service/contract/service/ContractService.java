@@ -8,8 +8,10 @@ import com.ftn.sbnz.model.packages.Packages;
 import com.ftn.sbnz.model.user.Client;
 import com.ftn.sbnz.model.user.Discount;
 import com.ftn.sbnz.service.exception.packages.PackageDoesNotExistByIdException;
+import com.ftn.sbnz.service.exception.user.UsernameNotFoundException;
 import com.ftn.sbnz.service.mapper.ContractMapper;
 import com.ftn.sbnz.service.packages.repository.PackagesRepository;
+import com.ftn.sbnz.service.user.repository.ClientRepository;
 import com.ftn.sbnz.service.user.repository.DiscountRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -18,6 +20,8 @@ import org.springframework.stereotype.Service;
 import com.ftn.sbnz.service.contract.repository.ContractRepository;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -29,12 +33,16 @@ public class ContractService implements IContractService {
     private final DiscountRepository discountRepository;
     private final ContractMapper contractMapper;
     private final ContractDroolsService contractDroolsService;
+    private final ClientRepository clientRepository;
 
     @Override
-    public ContractDTO create(CreateContractDTO createContractDTO, Client client) {
+    public ContractDTO create(CreateContractDTO createContractDTO, String username) {
         Contract contract = new Contract();
-        Packages packages = packagesRepository.findById(Long.valueOf(createContractDTO.getPackageId())).orElseThrow(
-                () -> {return new PackageDoesNotExistByIdException(createContractDTO.getPackageId());}
+        Client client = clientRepository.findByEmail(username).orElseThrow(
+                () -> {return new UsernameNotFoundException(username); }
+        );
+        Packages packages = packagesRepository.findById(createContractDTO.getPackageId()).orElseThrow(
+                () -> {return new PackageDoesNotExistByIdException(createContractDTO.getPackageId().toString());}
         );
         contract.setPackages(packages);
         contract.setStartDate(LocalDateTime.now());
@@ -65,6 +73,18 @@ public class ContractService implements IContractService {
             contractDroolsService.deleteDiscountFact(discount.get());
             discountRepository.deleteById(discount.get().getId());
         }
+    }
+
+    @Override
+    public List<ContractDTO> getContractsForClient(String username) {
+        Client client = clientRepository.findByEmail(username).orElseThrow(
+                () -> {return new UsernameNotFoundException(username); }
+        );
+        List<ContractDTO> contractDTOs = new ArrayList<>();
+        for (Contract contract : contractRepository.findContractsByClientId(client.getId())) {
+            contractDTOs.add(contractMapper.mapContractToContractDTO(contract));
+        }
+        return contractDTOs;
     }
 
     //    @Scheduled(fixedDelay = 12 * 60 * 60 * 1000) // 12 hours

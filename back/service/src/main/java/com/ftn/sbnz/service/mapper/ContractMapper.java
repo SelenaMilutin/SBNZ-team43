@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ContractMapper {
 
-    private PackageMapper packageMapper;
+    private final PackageMapper packageMapper;
 
     public ContractDTO mapContractToContractDTO(Contract contract) {
         ContractDTO contractDTO = new ContractDTO();

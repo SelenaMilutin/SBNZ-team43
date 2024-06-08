@@ -1,19 +1,20 @@
-package com.ftn.sbnz.model.contract.dto;
+package com.ftn.sbnz.model.packages.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class PackageDTO {
 
-    protected Long id;
+    private Long id;
     private String name;
     private double monthlyPrice;
     private String packageType;
     private boolean inOfferFlag;
+
 }

@@ -68,6 +68,8 @@ export default function NavBar() {
                 { token === null && <LinkStyle to="/register">Register</LinkStyle>}
                 {/* { !(token === null) && (user?.role === "ADMIN") && <LinkStyle to="/servicearea">Service Areas</LinkStyle> } */}
                  <LinkStyle to="/servicearea">Service Areas</LinkStyle> 
+                {/* { !(token === null) && (user?.role === "CLIENT") && <LinkStyle to="/contract/create">Create Contract</LinkStyle>} */}
+                { <LinkStyle to="/contract/create">Create Contract</LinkStyle> }
                 { !(token === null) && (user?.role === "CLIENT") && <LinkStyle to="/profile">Profile</LinkStyle>}
                 { !(token === null) && <Button text={"Logout"} type={"button"} onClickHandler={onLogout} />}
             </NavBarStyle>

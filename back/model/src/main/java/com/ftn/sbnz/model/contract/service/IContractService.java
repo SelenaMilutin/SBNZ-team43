@@ -5,12 +5,16 @@ import com.ftn.sbnz.model.contract.dto.ContractDTO;
 import com.ftn.sbnz.model.contract.dto.CreateContractDTO;
 import com.ftn.sbnz.model.user.Client;
 
+import java.util.List;
+
 public interface IContractService {
 
-    ContractDTO create(CreateContractDTO contract, Client client);
+    ContractDTO create(CreateContractDTO contract, String username);
 
     void createDiscount(Contract contract, int numberOfPreviousContracts);
 
     void applyDiscount(Contract contract);
+
+    List<ContractDTO> getContractsForClient(String username);
 
 }

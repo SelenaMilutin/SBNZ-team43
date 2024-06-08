@@ -53,6 +53,8 @@ public class SecurityConfig {
                 .antMatchers("/api/user").permitAll()
                 .antMatchers("/api/auth/login").permitAll()
                 .antMatchers("/socket/**").permitAll()
+                .antMatchers("/packages").permitAll()
+                .antMatchers("/contracts").permitAll()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 

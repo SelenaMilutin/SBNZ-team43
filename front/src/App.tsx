@@ -8,6 +8,7 @@ import { AuthProvider } from "./contexts/AuthContext";
 import ProfilePage from "./pages/profile/ProfilePage";
 import LandingPage from "./pages/landing/LandingPage";
 import ServiceAreaPage from "./pages/servicearea/ServiceAreasPage";
+import CreateContractPage from "./pages/contract/CreateContractPage";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
                 <Route path="register" element={<RegisterPage/>}/>
                 <Route path="profile" element={<ProfilePage/>}/>
                 <Route path="servicearea" element={<ServiceAreaPage/>}/>
+                <Route path="contract/create" element={<CreateContractPage/>}/>
               </Route>
           </Routes>
         </AuthProvider>

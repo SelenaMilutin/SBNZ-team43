@@ -1,5 +1,4 @@
 import { ServiceArea } from "../../models/servicearea/ServiceArea";
-import { ServiceAreaService } from "../../services/ServiceAreaService";
 import { formatDateTime } from "../../utils/formats/DateTimeFormat";
 import Button from "../shared/Button/Button";
 import { CardStyle, CardContent } from "../shared/Card/Card.style";
