@@ -6,6 +6,9 @@ import { Packages, PackageType } from "../../models/packages/Packages";
 import { PackagesService } from "../../services/PackagesService";
 import Button from "../../components/shared/Button/Button";
 import { ContractService } from "../../services/ContractService";
+import { CenteredDiv, RowDiv, RowDivTopAligned } from "../../components/shared/style/DivStyle";
+import { CardStyle } from "../../components/shared/Card/Card.style";
+import { IssuesAndSolutionsCardStyle } from "../../components/technicalissue/TechnicalIssueCardStyle";
 
 
 const availableContractLengthOptions: ContractLengthOption[] = [
@@ -24,6 +27,17 @@ const CreateContractPage = () => {
     const [mobilePackages, setMobilePackages] = useState<Packages[]>([]);
     const [netPackages, setNetPackages] = useState<Packages[]>([]);
     const [cablePackages, setCablePackages] = useState<Packages[]>([]);
+    const [isVisibleNet, setIsVisibleNet] = useState(false);
+    const [isVisibleMobile, setIsVisibleMobile] = useState(false);
+    const [isVisibleCable, setIsVisibleCable] = useState(false);
+
+    const toggleVisibility = (id: string) => {
+        switch(id) {
+            case "NET": setIsVisibleNet(!isVisibleNet); return;
+            case "MOBILE": setIsVisibleMobile(!isVisibleMobile); return;
+            case "CABLE": setIsVisibleCable(!isVisibleCable); return;
+        }
+    };
 
     const handleContractLenghtSelectionChange = (val: SetStateAction<ContractLengthOption[]>) => {
         setSelectedContractLengthOptions(val); 
@@ -70,21 +84,47 @@ const CreateContractPage = () => {
 
     return <CreateContractPageStyle>
             <h1>Create a new contract</h1>
-            <h2>Join millions of users - welcome to Internet Services!</h2>
-                <h3>Select length of contract</h3>
-                <Multiselect 
-                    isSingleSelect={true}
-                    data={contractLengthOptions} 
-                    setSelectedInParent={handleContractLenghtSelectionChange} 
-                    values={[]} />
-                <h3>Choose package category and type</h3>
-                <h4>Net packages</h4>
-                <PackageCardList packages={netPackages} selectPackage={onPackageSelect}/>
-                <h4>Mobile packages</h4>
-                <PackageCardList packages={mobilePackages} selectPackage={onPackageSelect}/>
-                <h4>Cable packages</h4>
-                <PackageCardList packages={cablePackages} selectPackage={onPackageSelect}/>
-                <Button text={"Create contract"} type={"submit"} onClickHandler={onSubmitClick} />
+
+            <h3>Select length of contract</h3>
+            <div>
+                    <Multiselect 
+                        isSingleSelect={true}
+                        data={contractLengthOptions} 
+                        setSelectedInParent={handleContractLenghtSelectionChange} 
+                        values={[]} />
+                </div>
+
+            <h3>Choose package from categories</h3>
+            <div style={{ marginLeft: '50px'}}>
+                { selectedPackage != null && 
+                    <p>Selected package: {selectedPackage.name} </p>
+                    
+                }
+                <h3 onClick={() => {toggleVisibility("NET")}} style={{ cursor: 'pointer' }}>Net packages ˅</h3>
+                { isVisibleNet && <PackageCardList packages={netPackages} selectPackage={onPackageSelect}/>}
+                <h3 onClick={() => {toggleVisibility("MOBILE")}} style={{ cursor: 'pointer' }}>Mobile packages ˅</h3>
+                { isVisibleMobile &&  <PackageCardList packages={mobilePackages} selectPackage={onPackageSelect}/>}
+                <h3 onClick={() => {toggleVisibility("CABLE")}} style={{ cursor: 'pointer' }}>Cable packages ˅</h3>
+                { isVisibleCable &&  <PackageCardList packages={cablePackages} selectPackage={onPackageSelect}/>}
+            </div>
+                
+                
+                
+                
+                
+                { selectedPackage != null && selectedContractLengthOptions.length>0 &&
+                    <div>
+                        <hr style={{marginTop: '40px'}}/>
+                        <CenteredDiv>
+                            <p>You have selected following contract options: </p>
+                            <CardStyle>
+                                <h4>• Package {selectedPackage?.name}</h4>
+                                <h4>• For {selectedContractLengthOptions[0]?.name} months</h4>
+                            </CardStyle>
+                            <Button text={"Create contract"} type={"submit"} onClickHandler={onSubmitClick} />
+                        </CenteredDiv>
+                    </div>
+                }
             </CreateContractPageStyle>
 
 }

@@ -23,10 +23,17 @@ const RowDiv = styled.div`
     align-items: center;
 `
 
+const RowDivTopAligned = styled.div`
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+`
+
 export {
     RightAlignDiv,
     CenteredDiv,
     NotDisplayedDiv,
-    RowDiv
+    RowDiv,
+    RowDivTopAligned
 }
 

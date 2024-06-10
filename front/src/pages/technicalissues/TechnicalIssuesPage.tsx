@@ -7,6 +7,7 @@ import { CardContent, CardStyle } from "../../components/shared/Card/Card.style"
 import { IssuesAndSolutionsCardStyle, TechnicalIssueCardContentStyle, TechnicalIssueCardStyle } from "../../components/technicalissue/TechnicalIssueCardStyle";
 import TechnicalIssueButton from "../../components/technicalissue/TechnicalIssueButton";
 import CardListStyle from "../../components/shared/CardList/CardList.style";
+import { scrollToSection } from "../../utils/behavior/Scroll";
 
 const TechnicalIssuesPage = () => {
 
@@ -18,6 +19,7 @@ const TechnicalIssuesPage = () => {
             const res = await ComplaintsService.getIssueSolution(selectedIssue)
             console.log(res)
             setIssueSolutionList(res.data)
+            scrollToSection("solutionSection")
         } catch {
             alert("Couldn't get solutions. Try again later.")
         }
@@ -56,7 +58,7 @@ const TechnicalIssuesPage = () => {
                 </TechnicalIssueCardContentStyle>
             </TechnicalIssueCardStyle>
         </RowDiv>
-        <h3>Possible issues & Solutions to try</h3>
+        <h3 id="solutionSection">Possible issues & Solutions to try</h3>
         <CardListStyle>
             {issueSolutionList.map(solution => 
                 <IssuesAndSolutionsCardStyle>
