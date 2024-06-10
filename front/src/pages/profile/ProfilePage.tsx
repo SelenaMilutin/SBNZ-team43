@@ -7,17 +7,21 @@ import ContractCardList from "../../components/contract/ContractCardList";
 import { ContractService } from "../../services/ContractService";
 import { Contract } from "../../models/contracts/Contract";
 import { CardContent, CardStyle } from "../../components/shared/Card/Card.style";
-import { RowDiv } from "../../components/shared/style/DivStyle";
+import { RightAlignDiv, RowDiv } from "../../components/shared/style/DivStyle";
+import { Packages } from "../../models/packages/Packages";
+import { LinkStyle } from "../../components/shared/NavBar/NavBar.style";
 
 const ProfilePage = () => {
 
     const { user } = useAuth();
     const [userProfile, setUserProfile] = useState<UserProfile>();
     const [contracts, setContracts] = useState<Contract[]>([]);
-    
+    const [contractProposal, setContractProposal] = useState<Packages>();
+
     useEffect( () => {
         getProfile();
         getContracts();
+        getContractProposal();
     }, [])
 
     function getProfile() {
@@ -51,6 +55,18 @@ const ProfilePage = () => {
         })
     }
 
+    function getContractProposal() {
+        ContractService.getContractProposal()
+        .then(
+            (response) => {
+                setContractProposal(response.data)
+                console.log(response)
+            }
+        ).catch(
+            (error) => {
+        })
+    }
+
     return (
         <ProfilePageStyle>
             <div>
@@ -81,6 +97,20 @@ const ProfilePage = () => {
             
             <div>
                 <h2>Contracts</h2>
+                {contractProposal != undefined && contractProposal != null && 
+                    <div>
+                        <h3>Contract recommendations</h3>
+                        <p>You have proposal for {contractProposal.packageType.toLowerCase()} contract</p>
+                        <CardStyle>
+                            <h3>{contractProposal.name}</h3>
+                            <CardContent>
+                                <p>Monthly price: {contractProposal.monthlyPrice}</p>
+                                <p>Go to <LinkStyle to="/contract/create">Create Contract page</LinkStyle></p>
+                            </CardContent>
+                        </CardStyle>
+                    </div>
+                }
+                <h3>Contracts overview</h3>
                 <ContractCardList contracts={contracts}/>
             </div>
 

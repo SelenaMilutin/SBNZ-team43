@@ -2,6 +2,7 @@ package com.ftn.sbnz.service.contract.controller;
 
 import com.ftn.sbnz.model.contract.dto.ContractDTO;
 import com.ftn.sbnz.model.contract.dto.CreateContractDTO;
+import com.ftn.sbnz.model.packages.dto.PackageDTO;
 import com.ftn.sbnz.model.user.AppUser;
 import com.ftn.sbnz.service.auth.service.JWTService;
 import lombok.RequiredArgsConstructor;
@@ -45,6 +46,16 @@ public class ContractController {
         }
 
         return new ResponseEntity<>(contractService.getContractsForClient(user.getUsername()), HttpStatus.OK);
+    }
+
+    @GetMapping("/proposals")
+    ResponseEntity<PackageDTO> getProposal() {
+        AppUser user = (AppUser) jwtService.getAuthenticatedUser();
+        if (user == null) {
+            throw new AuthenticationCredentialsNotFoundException("User is not authenticated for getting contract proposal");
+        }
+
+        return new ResponseEntity<>(contractService.getContractProposal(user.getUsername()), HttpStatus.OK);
     }
 
 }

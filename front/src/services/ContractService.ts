@@ -13,4 +13,9 @@ export class ContractService {
         return HttpClient.post(this.url, contract, {} );
     }
 
+    public static async getContractProposal() {
+        const finalUrl = `${this.url}/proposals`
+        return HttpClient.get(finalUrl)
+    }
+
 }

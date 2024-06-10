@@ -1,15 +1,20 @@
 package com.ftn.sbnz.service.contract.service;
 
 import com.ftn.sbnz.model.contract.Contract;
+import com.ftn.sbnz.model.contract.ContractProposal;
 import com.ftn.sbnz.model.contract.dto.ContractDTO;
 import com.ftn.sbnz.model.contract.dto.CreateContractDTO;
 import com.ftn.sbnz.model.contract.service.IContractService;
 import com.ftn.sbnz.model.packages.Packages;
+import com.ftn.sbnz.model.packages.dto.PackageDTO;
 import com.ftn.sbnz.model.user.Client;
 import com.ftn.sbnz.model.user.Discount;
+import com.ftn.sbnz.service.contract.repository.ContractProposalRepository;
+import com.ftn.sbnz.service.exception.contract.NoContractProposalExistsException;
 import com.ftn.sbnz.service.exception.packages.PackageDoesNotExistByIdException;
 import com.ftn.sbnz.service.exception.user.UsernameNotFoundException;
 import com.ftn.sbnz.service.mapper.ContractMapper;
+import com.ftn.sbnz.service.mapper.PackageMapper;
 import com.ftn.sbnz.service.packages.repository.PackagesRepository;
 import com.ftn.sbnz.service.user.repository.ClientRepository;
 import com.ftn.sbnz.service.user.repository.DiscountRepository;
@@ -34,6 +39,7 @@ public class ContractService implements IContractService {
     private final ContractMapper contractMapper;
     private final ContractDroolsService contractDroolsService;
     private final ClientRepository clientRepository;
+    private final PackageMapper packageMapper;
 
     @Override
     public ContractDTO create(CreateContractDTO createContractDTO, String username) {
@@ -85,6 +91,17 @@ public class ContractService implements IContractService {
             contractDTOs.add(contractMapper.mapContractToContractDTO(contract));
         }
         return contractDTOs;
+    }
+
+    @Override
+    public PackageDTO getContractProposal(String username) {
+        Client client = clientRepository.findByEmail(username).orElseThrow(
+                () -> {return new UsernameNotFoundException(username); }
+        );
+        if (!client.hasContractProposal()) {
+            throw new NoContractProposalExistsException(client.getUsername());
+        }
+        return packageMapper.mapPackageToPackageDTO(client.getContractProposal().getPackages());
     }
 
     //    @Scheduled(fixedDelay = 12 * 60 * 60 * 1000) // 12 hours
