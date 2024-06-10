@@ -37,6 +37,11 @@ public class DroolsConfig {
         return kieContainer().newKieSession("forwardContractKsession");
     }
 
+    @Bean
+    public KieSession backwardForReportsKsession() {
+        return kieContainer().newKieSession("bwKsession");
+    }
+
     public static void testKieSessionFactsAndRules(KieSession kieSession) {
 
         // Testing WM facts

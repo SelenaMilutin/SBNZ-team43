@@ -1,17 +1,64 @@
 package backward;
-//import com.ftn.sbnz.model.models.Cloud;
+import com.ftn.sbnz.model.contract.Contract;
+import com.ftn.sbnz.model.packages.Packages;
 
 
-query isContained(String x, String y)
-    Cloud( x, y;)
+global Number postpaidCount;
+global Number prepaidCount;
+
+query isContained(String x, String y, String type)
+    Packages(name == x, parent.name == y, type == packageType.toString())
+//    Contract( packages.name == x, packages.parent != null, packages.parent.name == y )
     or
-    ( Cloud(z, y;) and isContained(x, z;))
+    (
+        Packages(parent != null, name == x, z: parent.name, type == packageType.toString())
+//        Contract( packages.parent != null, z : packages.parent.name, packages.name == x )
+        and
+        isContained(z, y, type;)
+    )
 end
 
-//rule "Find stratiformis"
+query isContainedIn( String x, String y )
+    Packages( name == x, parent.name == y )
+    or
+    ( Packages( z: name, parent.name == y ) and isContainedIn(x, z;))
+end
+
+rule "Find Postpaid"
+when
+    $contract: Contract($name: packages.name, $type: packages.packageType.toString(),
+    $p: packages.parent.name,
+    $p2: packages.parent.parent.name,
+     $p3: packages.parent.parent.parent.name,
+     $p4: packages.parent.parent.parent.parent.name)
+    isContainedIn($name, "Postpejd";)
+
+then
+//    System.out.println($p);
+//    System.out.println($p2);
+//    System.out.println($p3);
+//    System.out.println($p4);
+    System.out.println($contract);
+end
+
+//rule "Count Postpaid Contracts"
 //when
-//    $cloud: Cloud($name: child)
-//    isContained($name, "stratiformis";)
+//    $count: Number() from accumulate(
+//        $contract: Contract($name: packages.name) and isContained($name, "Postpejd";),
+//        count($contract)
+//    )
 //then
-//    System.out.println($cloud);
+//    postpaidCount = $count;
+//    System.out.println("Number of contracts containing 'Postpaid': " + $count);
+//end
+//
+//rule "Count Pripejd Contracts"
+//when
+//    $count: Number() from accumulate(
+//        $contract: Contract($name: packages.name) and isContained($name, "Pripejd";),
+//        count($contract)
+//    )
+//then
+//    prepaidCount = $count;
+//    System.out.println("Number of contracts containing 'Prepaid': " + $count);
 //end

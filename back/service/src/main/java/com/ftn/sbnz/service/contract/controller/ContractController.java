@@ -4,8 +4,8 @@ import com.ftn.sbnz.model.contract.dto.ContractDTO;
 import com.ftn.sbnz.model.contract.dto.CreateContractDTO;
 import com.ftn.sbnz.model.user.AppUser;
 import com.ftn.sbnz.service.auth.service.JWTService;
+import com.ftn.sbnz.model.contract.dto.PyChartDTO;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.ftn.sbnz.model.contract.service.IContractService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -45,6 +46,16 @@ public class ContractController {
         }
 
         return new ResponseEntity<>(contractService.getContractsForClient(user.getUsername()), HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/pyCartReport", produces = "application/json")
+    ResponseEntity<ArrayList<PyChartDTO>> getPrepaidPostpaidDistribution() {
+//        AppUser user = (AppUser) jwtService.getAuthenticatedUser();
+//        if (user == null) {
+//            throw new AuthenticationCredentialsNotFoundException("User is not authenticated for creating contract");
+//        }
+
+        return new ResponseEntity<>(contractService.getPrepaidPostpaidDistribution(), HttpStatus.OK);
     }
 
 }
