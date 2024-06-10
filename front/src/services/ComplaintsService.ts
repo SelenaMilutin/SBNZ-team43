@@ -9,5 +9,9 @@ export class ComplaintsService {
         return HttpClient.get(finalUrl, {issueConsequence})
     }
 
+    public static async postComplaint(packageId: number, complaint: string, recommendation: string) {
+        return HttpClient.post(this.url, {packageId, complaint, recommendation}, {})
+    }
+
 
 }

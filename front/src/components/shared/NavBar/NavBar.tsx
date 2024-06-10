@@ -73,6 +73,7 @@ export default function NavBar() {
                 {/* { !(token === null) && (user?.role === "CLIENT") && <LinkStyle to="/technicalissue>Help</LinkStyle>} */}
                 { <LinkStyle to="/technicalissue">Help</LinkStyle> }
                 { !(token === null) && (user?.role === "CLIENT") && <LinkStyle to="/profile">Profile</LinkStyle>}
+                { !(token === null) && (user?.role === "CLIENT") && <LinkStyle to="/complaint">Send Complaint</LinkStyle>}
                 { !(token === null) && <Button text={"Logout"} type={"button"} onClickHandler={onLogout} />}
             </NavBarStyle>
             <Outlet/>

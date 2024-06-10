@@ -105,7 +105,7 @@ const ProfilePage = () => {
                             <h3>{contractProposal.name}</h3>
                             <CardContent>
                                 <p>Monthly price: {contractProposal.monthlyPrice}</p>
-                                <p>Go to <LinkStyle to="/contract/create">Create Contract page</LinkStyle></p>
+                                <p>Go to<LinkStyle to="/contract/create">Create Contract page</LinkStyle></p>
                             </CardContent>
                         </CardStyle>
                     </div>

@@ -10,6 +10,7 @@ import LandingPage from "./pages/landing/LandingPage";
 import ServiceAreaPage from "./pages/servicearea/ServiceAreasPage";
 import CreateContractPage from "./pages/contract/CreateContractPage";
 import TechnicalIssuesPage from "./pages/technicalissues/TechnicalIssuesPage";
+import ComplaintPage from "./pages/complaint/ComplaintPage";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
                 <Route path="servicearea" element={<ServiceAreaPage/>}/>
                 <Route path="contract/create" element={<CreateContractPage/>}/>
                 <Route path="technicalissue" element={<TechnicalIssuesPage/>}/>
+                <Route path="complaint" element={<ComplaintPage/>}/>
               </Route>
           </Routes>
         </AuthProvider>
