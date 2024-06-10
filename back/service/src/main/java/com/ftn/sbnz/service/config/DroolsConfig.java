@@ -42,6 +42,11 @@ public class DroolsConfig {
         return kieContainer().newKieSession("bwKsession");
     }
 
+    @Bean
+    public KieSession cepKsession() {
+        return kieContainer().newKieSession("cepKsession");
+    }
+
     public static void testKieSessionFactsAndRules(KieSession kieSession) {
 
         // Testing WM facts

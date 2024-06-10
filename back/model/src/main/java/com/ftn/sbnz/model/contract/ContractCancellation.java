@@ -3,6 +3,7 @@ package com.ftn.sbnz.model.contract;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -18,5 +19,7 @@ public class ContractCancellation {
 
     @OneToOne
     private Contract contract;
+
+    private LocalDateTime timestamp;
 
 }

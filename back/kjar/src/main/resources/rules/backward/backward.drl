@@ -30,14 +30,16 @@ when
     $p: packages.parent.name,
     $p2: packages.parent.parent.name,
      $p3: packages.parent.parent.parent.name,
-     $p4: packages.parent.parent.parent.parent.name)
-    isContainedIn($name, "Postpejd";)
+     $p4: packages.parent.parent.parent.parent.name,
+     $p5: packages.parent.parent.parent.parent.parent)
+//    isContainedIn($name, "Postpejd";)
 
 then
-//    System.out.println($p);
-//    System.out.println($p2);
-//    System.out.println($p3);
-//    System.out.println($p4);
+    System.out.println($p);
+    System.out.println($p2);
+    System.out.println($p3);
+    System.out.println($p4);
+    System.out.println($p5);
     System.out.println($contract);
 end
 

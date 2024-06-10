@@ -20,4 +20,6 @@ public interface IContractService {
     List<ContractDTO> getContractsForClient(String username);
 
     ArrayList<PyChartDTO> getPrepaidPostpaidDistribution();
+
+    Contract findById(Long id);
 }

@@ -118,6 +118,14 @@ public class ContractService implements IContractService {
         return values;
     }
 
+    @Override
+    public Contract findById(Long id) {
+        Optional<Contract> opt = contractRepository.findById(id);
+        if (opt.isEmpty())
+            throw new RuntimeException("Contract now found");
+        return opt.get();
+    }
+
     //    @Scheduled(fixedDelay = 12 * 60 * 60 * 1000) // 12 hours
     @Scheduled(fixedDelay = 20 * 1000)
     public void checkContractExpirations() {

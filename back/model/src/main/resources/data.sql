@@ -21,9 +21,9 @@ insert into adminn (id) values (2) ON CONFLICT (id) DO NOTHING;
 -- TRUNCATE TABLE internet_packages;
 -- TRUNCATE TABLE cable_packages;
 TRUNCATE TABLE packages CASCADE;
-TRUNCATE TABLE mobile_packages;
-TRUNCATE TABLE internet_packages;
-TRUNCATE TABLE cable_packages;
+TRUNCATE TABLE mobile_packages RESTART IDENTITY CASCADE;
+TRUNCATE TABLE internet_packages RESTART IDENTITY CASCADE;
+TRUNCATE TABLE cable_packages RESTART IDENTITY CASCADE;
 ALTER SEQUENCE packages_id_seq RESTART WITH 1;
 
 -- insert into passengers_rides (passenger_id, ride_id) values (1, 1);
@@ -354,4 +354,5 @@ insert into cable_packages (id, chanel_number) values (3, 0);
 
 insert into internet_packages(id, internet, expiration) values (1, 0, 0);
 
-INSERT INTO contract (start_date, expiration_date, active_flag, client_id, packages_id, discount, proccessed_flag) VALUES ('2022-06-08 14:30:00', '2024-12-08 14:30:00', true, 1, 21, 0.0, true);
+INSERT INTO contract (start_date, expiration_date, active_flag, client_id, packages_id, discount, proccessed_flag)
+VALUES ('2022-06-08 14:30:00', '2024-12-08 14:30:00', true, 1, 21, 0.0, true);
