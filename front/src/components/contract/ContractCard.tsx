@@ -2,7 +2,7 @@ import { Contract } from "../../models/contracts/Contract";
 import { formatDate } from "../../utils/formats/DateTimeFormat";
 import Button from "../shared/Button/Button";
 import { CardStyle, CardContent } from "../shared/Card/Card.style";
-import { RightAlignDiv, RowDiv } from "../shared/style/DivStyle";
+import { RightAlignDiv } from "../shared/style/DivStyle";
 
 interface ContractCardProps {
     contract: Contract

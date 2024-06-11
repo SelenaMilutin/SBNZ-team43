@@ -1,4 +1,4 @@
-import { Link, Outlet } from "react-router-dom"
+import { Outlet } from "react-router-dom"
 import Button from "../Button/Button";
 import { Footer, LinkStyle, NavBarStyle } from "./NavBar.style";
 import { useAuth } from "../../../contexts/AuthContext";
@@ -14,22 +14,6 @@ import { formatDateTime } from "../../../utils/formats/DateTimeFormat";
 export default function NavBar() {
 
     const { user, token, onLogout } = useAuth();
-    // const {
-    //     sendMessage,
-    //     sendJsonMessage,
-    //     lastMessage,
-    //     lastJsonMessage,
-    //     readyState,
-    //     getWebSocket,
-    //   } = useWebSocket(WEB_SOCKET_URL+"/notification/" + user?.username, {
-    //     onOpen: () => console.log('opened'),
-    //     shouldReconnect: (closeEvent) => true,
-    //   });
-
-
-    // useEffect(() => {
-    //     console.log(`Got a new message: ${lastJsonMessage}`)
-    //   }, [lastJsonMessage])
 
     const [stompClient, setStompClient] = useState<CompatClient | null>(null);
 

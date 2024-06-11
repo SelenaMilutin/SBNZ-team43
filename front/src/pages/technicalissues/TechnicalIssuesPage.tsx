@@ -1,9 +1,8 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { IssueSolution } from "../../models/technicalissue/IssueSolution";
 import { TechnicalIssuesPageStyle } from "./TechnicalIssuesStyle";
 import { ComplaintsService } from "../../services/ComplaintsService";
 import { RowDiv } from "../../components/shared/style/DivStyle";
-import { CardContent, CardStyle } from "../../components/shared/Card/Card.style";
 import { IssuesAndSolutionsCardStyle, TechnicalIssueCardContentStyle, TechnicalIssueCardStyle } from "../../components/technicalissue/TechnicalIssueCardStyle";
 import TechnicalIssueButton from "../../components/technicalissue/TechnicalIssueButton";
 import CardListStyle from "../../components/shared/CardList/CardList.style";

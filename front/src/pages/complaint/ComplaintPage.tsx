@@ -1,11 +1,10 @@
 import { SetStateAction, useEffect, useState } from "react";
-import Input from "../../components/shared/Input/Input";
 import { ComplaintPageStyle } from "./ComplaintPageStyle";
 import Button from "../../components/shared/Button/Button";
 import { ComplaintsService } from "../../services/ComplaintsService";
 import ComplaintInput from "../../components/complaint/ComplaintInput";
 import Multiselect from "../../components/shared/Multiselect/Multiselect";
-import { Packages, PackageType } from "../../models/packages/Packages";
+import { PackageType } from "../../models/packages/Packages";
 import { Contract } from "../../models/contracts/Contract";
 import { ContractService } from "../../services/ContractService";
 

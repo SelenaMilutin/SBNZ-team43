@@ -6,9 +6,8 @@ import { Packages, PackageType } from "../../models/packages/Packages";
 import { PackagesService } from "../../services/PackagesService";
 import Button from "../../components/shared/Button/Button";
 import { ContractService } from "../../services/ContractService";
-import { CenteredDiv, RowDiv, RowDivTopAligned } from "../../components/shared/style/DivStyle";
+import { CenteredDiv } from "../../components/shared/style/DivStyle";
 import { CardStyle } from "../../components/shared/Card/Card.style";
-import { IssuesAndSolutionsCardStyle } from "../../components/technicalissue/TechnicalIssueCardStyle";
 
 
 const availableContractLengthOptions: ContractLengthOption[] = [

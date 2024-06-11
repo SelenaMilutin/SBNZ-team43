@@ -7,7 +7,7 @@ import ContractCardList from "../../components/contract/ContractCardList";
 import { ContractService } from "../../services/ContractService";
 import { Contract } from "../../models/contracts/Contract";
 import { CardContent, CardStyle } from "../../components/shared/Card/Card.style";
-import { RightAlignDiv, RowDiv } from "../../components/shared/style/DivStyle";
+import { RowDiv } from "../../components/shared/style/DivStyle";
 import { Packages } from "../../models/packages/Packages";
 import { LinkStyle } from "../../components/shared/NavBar/NavBar.style";
 import { CancellationDTO } from "../../models/contracts/CancelContract";
@@ -116,7 +116,7 @@ const ProfilePage = () => {
             
             <div>
                 <h2>Contracts</h2>
-                {contractProposal != undefined && contractProposal != null && 
+                {contractProposal !== undefined && contractProposal !== null && 
                     <div>
                         <h3>Contract recommendations</h3>
                         <p>You have proposal for {contractProposal.packageType.toLowerCase()} contract</p>
