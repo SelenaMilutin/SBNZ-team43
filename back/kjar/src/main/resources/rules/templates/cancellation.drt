@@ -1,0 +1,27 @@
+template header
+isFirstHalf
+isPremium
+percentage
+
+package templates
+
+import com.ftn.sbnz.model.contract.ContractCancellation;
+
+
+template "cancelation-rules"
+
+rule "Cancel contract_@{row.rowNumber}"
+no-loop true
+when
+    $c: ContractCancellation(
+    contract.activeFlag == true,
+    contract.isInFirstHalf() == @{isFirstHalf},
+    contract.client.premium == @{isPremium}
+    )
+then
+    modify($c) { getContract().setActiveFlag(false)};
+    modify($c) { getContract().setDiscount($c.getContract().calculateDebt(@{percentage}))};
+    System.out.println("Your depth is " + $c.getContract().calculateDebt(@{percentage}));
+end
+
+end template

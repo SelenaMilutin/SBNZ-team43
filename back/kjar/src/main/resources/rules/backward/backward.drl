@@ -1,0 +1,79 @@
+package backward;
+import com.ftn.sbnz.model.contract.Contract;
+import com.ftn.sbnz.model.packages.dto.TransitionPackage;
+import com.ftn.sbnz.model.contract.service.IContractService;
+
+
+global IContractService service;
+//query isContained(String x, String y, String type)
+//    Packages(name == x, parent.name == y, type == packageType.toString())
+////    Contract( packages.name == x, packages.parent != null, packages.parent.name == y )
+//    or
+//    (
+//        Packages(parent != null, name == x, z: parent.name, type == packageType.toString())
+////        Contract( packages.parent != null, z : packages.parent.name, packages.name == x )
+//        and
+//        isContained(z, y, type;)
+//    )
+//end
+
+query isContainedIn( String x, String y, String type )
+    TransitionPackage( x, y, type; )
+    or
+    ( TransitionPackage( z, y, type; ) and isContainedIn(x, z, type;))
+end
+
+rule "Find Postpaid"
+when
+    $contract: Contract($name: packages.name, $type: packages.packageType.toString(),
+    $p: packages.parent.name,
+    $p2: packages.parent.parent.name,
+    $p3: packages.parent.parent.parent.name,
+    $p4: packages.parent.parent.parent.parent.name,
+    $p5: packages.parent.parent.parent.parent.parent)
+    isContainedIn($name, "Postpejd", $type;)
+
+then
+    System.out.println($p);
+    System.out.println($p2);
+    System.out.println($p3);
+    System.out.println($p4);
+    System.out.println($p5);
+    System.out.println($contract);
+end
+
+//rule "Count Postpaid Contracts"
+//when
+//    $count: Number() from accumulate(
+//        $contract: Contract($name: packages.name,
+//        $type: packages.packageType.toString())
+//        and
+//        isContainedIn($name, "Postpejd", $type;),
+//        count($contract)
+//    )
+//then
+//    postpaidCount = $count;
+//    System.out.println("Number of contracts containing 'Postpaid': " + $count);
+//end
+
+rule "Count Pripejd Contracts"
+when
+
+    $count: Number() from accumulate(
+        $contract: Contract($name: packages.name,
+        $type: packages.packageType.toString())
+        and
+        isContainedIn($name, "Pripejd", $type;),
+        count($contract)
+    )
+    $count2: Number() from accumulate(
+            $contract2: Contract($name2: packages.name,
+            $type2: packages.packageType.toString())
+            and
+            isContainedIn($name2, "Postpejd", $type2;),
+            count($contract2)
+        )
+then
+    service.setPrepaidAndPostpaid($count, $count2);
+    System.out.println("Number of contracts containing 'Prepaid': " + $count);
+end

@@ -1,0 +1,42 @@
+package rules.cep;
+dialect  "mvel"
+
+import com.ftn.sbnz.model.contract.Contract;
+import com.ftn.sbnz.model.contract.events.ConsumptionAlert;
+import com.ftn.sbnz.model.complaint.TechnicalIssue;
+import com.ftn.sbnz.model.complaint.service.IComplaintService;
+
+global IComplaintService complaintService;
+
+rule "Consumption Alert"
+    when
+    $c: ConsumptionAlert(
+    $m: message,
+    $client: contract.client
+    )
+    then
+    // System.out.println("%s %s, %s", $client.getName(), $client.getLastName, $m);
+    System.out.println($client.getName() + $client.getLastName() + $m);
+end
+
+
+rule "10 or more tehnical problems in one hour"
+    when
+    $c: TechnicalIssue(
+        $client: client,
+        $id: client.id
+        )
+        Number(intValue == 2) from accumulate(
+                $c2: TechnicalIssue(
+                this != $c,
+                client.id == $id,
+                client.blockedFlag == false,
+                this after[0s, 1h] $c
+                ),
+                count($c2)
+            )
+    then
+    modify($client){ setBlockedFlag(true)};
+    complaintService.setClientToBeBlockedCausedByComplaints($client);
+    System.out.println("Korisnik blokiran zbog 10 prijava tehnickih problema u sat vremena");
+end
