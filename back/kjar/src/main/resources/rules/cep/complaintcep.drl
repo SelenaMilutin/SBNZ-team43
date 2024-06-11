@@ -3,6 +3,7 @@ package rules.cep;
 import com.ftn.sbnz.model.complaint.Complaint;
 import com.ftn.sbnz.model.complaint.service.IComplaintService;
 import com.ftn.sbnz.model.packages.Packages;
+import com.ftn.sbnz.model.complaint.service.IComplaintService;
 
 global Packages recomend;
 global IComplaintService complaintService;
@@ -52,6 +53,7 @@ rule "comlaint for premium user"
     salience 10
     when
     $c: Complaint(
+        processed == false,
         client.premium == true,
         complaintMsg != "",
         $packag: packages
@@ -61,14 +63,18 @@ rule "comlaint for premium user"
     id != $packag.id)
     not (Packages(parent != null, parent.name == $p.name))
     then
+    modify($c){ setProcessed(true)};
     System.out.println("comlaint for premium user");
-    recomend = $p;
+    complaintService.handlePackageRecommendation($p, $c.getClient(), $packag);
+//    recomend = $p.copy();
+//    update(recomend)
 end
 
 rule "comlaint for non-premium user"
     no-loop
     when
     $c: Complaint(
+        processed == false,
         client.premium == false,
         complaintMsg != "",
         $packag: packages
@@ -78,8 +84,9 @@ rule "comlaint for non-premium user"
     id != $packag.id)
     not (Packages( parent != null, parent.name == $p.name))
     then
-    System.out.println("comlaint for non premium user");
-    recomend = $p;
+    modify($c){ setProcessed(true)};
+    System.out.println("comlaint for non premium user " + $p.getName() + " " + $p.getPackageType());
+    complaintService.handlePackageRecommendation($p, $c.getClient(), $packag);
 end
 
 rule "comlaint with recomendation"

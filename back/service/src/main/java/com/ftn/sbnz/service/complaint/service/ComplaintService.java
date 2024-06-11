@@ -148,22 +148,12 @@ public class ComplaintService implements IComplaintService {
     public void handleComplaint(Complaint complaint) {
         KieSession kieSession = config.cepKsession();
         config.cepKsession().setGlobal("complaintService", this);
-        Packages recommendedPackage = new Packages();
-        kieSession.setGlobal("recomend", recommendedPackage);
         List<Packages> packages = packagesRepository.findAll();
         for (Packages c: packages) {
             kieSession.insert(c);
         }
-        kieSession.fireAllRules();
         kieSession.insert(complaint);
         kieSession.fireAllRules();
-        recommendedPackage = (Packages) kieSession.getGlobal("recomend");
-        if (recommendedPackage != null) {
-            System.out.println("jeje");
-        }
-        else {
-            System.out.println("aaaaaaaa");
-        }
         complaintRepository.save(complaint);
     }
 
@@ -186,4 +176,13 @@ public class ComplaintService implements IComplaintService {
     public void setClientToBeBlockedCausedByComplaints(Client client) {
         clientRepository.save(client);
     }
+
+    public void handlePackageRecommendation(Packages packages, Client client, Packages oldPackage) {
+        System.out.println(packages);
+        NotificationDTO notificationDTO = notificationMapper.mapToRecomendPackageNotification(packages, LocalDateTime.now(), oldPackage);
+        this.simpMessagingTemplate.convertAndSend(
+                    NOTIFICATION_PREFIX + "/" + client.getUsername(),
+                    notificationDTO);
+    }
+
 }

@@ -18,4 +18,6 @@ public interface IComplaintService {
     void setPackageNotInOfferCausedByComplaints(Packages pack);
     void setClientToBeBlockedCausedByComplaints(Client client);
 
+    void handlePackageRecommendation(Packages packages, Client client, Packages oldPackage);
+
 }

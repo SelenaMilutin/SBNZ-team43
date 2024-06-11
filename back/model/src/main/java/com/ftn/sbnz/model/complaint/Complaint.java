@@ -38,4 +38,6 @@ public class Complaint {
     private Packages packages;
 
     private Date timestamp;
+
+    private boolean processed;
 }

@@ -1,5 +1,6 @@
 package com.ftn.sbnz.service.mapper;
 
+import com.ftn.sbnz.model.packages.Packages;
 import com.ftn.sbnz.model.servicearea.ServiceArea;
 import com.ftn.sbnz.service.dto.NotificationDTO;
 import org.springframework.stereotype.Component;
@@ -43,4 +44,7 @@ public class NotificationMapper {
 
     }
 
+    public NotificationDTO mapToRecomendPackageNotification(Packages packages, LocalDateTime now, Packages oldPackage) {
+        return new NotificationDTO(now, "We heard your complaint for " + oldPackage.getName() + ". We recommend the package " + packages.getName());
+    }
 }
