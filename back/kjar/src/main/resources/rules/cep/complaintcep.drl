@@ -61,7 +61,7 @@ rule "comlaint for premium user"
     then
     modify($c){ setProcessed(true)};
     System.out.println("comlaint for premium user");
-    complaintService.handlePackageRecommendation($p);
+    complaintService.handlePackageRecommendation($p, $c.getClient(), $packag);
 //    recomend = $p.copy();
 //    update(recomend)
 end
@@ -82,7 +82,7 @@ rule "comlaint for non-premium user"
     then
     modify($c){ setProcessed(true)};
     System.out.println("comlaint for non premium user " + $p.getName() + " " + $p.getPackageType());
-    complaintService.handlePackageRecommendation($p);
+    complaintService.handlePackageRecommendation($p, $c.getClient(), $packag);
 end
 
 rule "comlaint with recomendation"

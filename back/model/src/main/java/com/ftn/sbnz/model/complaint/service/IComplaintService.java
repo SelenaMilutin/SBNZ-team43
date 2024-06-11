@@ -4,6 +4,7 @@ import com.ftn.sbnz.model.complaint.Complaint;
 import com.ftn.sbnz.model.complaint.IssueAndSolution;
 import com.ftn.sbnz.model.complaint.TechnicalIssue;
 import com.ftn.sbnz.model.packages.Packages;
+import com.ftn.sbnz.model.user.Client;
 
 import java.util.List;
 
@@ -14,6 +15,6 @@ public interface IComplaintService {
     void fillIssuesAndSolutionsMap();
     void handleComplaint(Complaint complaint);
 
-    void handlePackageRecommendation(Packages packages);
+    void handlePackageRecommendation(Packages packages, Client client, Packages oldPackage);
 
 }
