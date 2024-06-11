@@ -30,7 +30,7 @@ public class ContractCancellationController {
             throw new AuthenticationCredentialsNotFoundException("User is not authenticated for creating contract");
         }
         Contract contract = contractService.findById((long) id);
-        if (contract.getClient() != user)
+        if (contract.getClient().getId() != user.getId())
             throw  new RuntimeException("Client is not authorised to cancel this contract");
         return new ResponseEntity<>(cancellationService.cancelContract(contract), HttpStatus.CREATED);
     }

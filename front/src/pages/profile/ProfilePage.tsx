@@ -10,6 +10,7 @@ import { CardContent, CardStyle } from "../../components/shared/Card/Card.style"
 import { RightAlignDiv, RowDiv } from "../../components/shared/style/DivStyle";
 import { Packages } from "../../models/packages/Packages";
 import { LinkStyle } from "../../components/shared/NavBar/NavBar.style";
+import { CancellationDTO } from "../../models/contracts/CancelContract";
 
 const ProfilePage = () => {
 
@@ -67,6 +68,24 @@ const ProfilePage = () => {
         })
     }
 
+    function onCancelContractClick(contractId: number) {
+        console.log("cancelling contract with id " + contractId)
+        ContractService.cancelContract(contractId)
+        .then( 
+            (response) => {
+                let cancellation: CancellationDTO = response.data;
+                if (cancellation.success === true) {
+                    alert("You have cancelled contract, and you have debt of amount " + cancellation.value.toFixed(2) + ".")
+                }
+            }
+        )
+        .catch(
+            (error) => {
+                alert("Couldn't cancel contract.")
+            }
+        )
+    }
+
     return (
         <ProfilePageStyle>
             <div>
@@ -111,7 +130,7 @@ const ProfilePage = () => {
                     </div>
                 }
                 <h3>Contracts overview</h3>
-                <ContractCardList contracts={contracts}/>
+                <ContractCardList contracts={contracts} cancelContractClick={onCancelContractClick}/>
             </div>
 
         </ProfilePageStyle>

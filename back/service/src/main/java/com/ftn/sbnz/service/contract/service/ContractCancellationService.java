@@ -28,6 +28,7 @@ public class ContractCancellationService implements IContractCancellationService
 
     @Override
     public CancellationDTO cancelContract(Contract contract) {
+        double discount = contract.getDiscount();
         InputStream template = KjarApplication.class.getResourceAsStream("/rules/templates/cancellation.drt");
         InputStream data = KjarApplication.class.getResourceAsStream("/rules/templates/cancellation-data.xls");
 
@@ -40,8 +41,10 @@ public class ContractCancellationService implements IContractCancellationService
         ksession.insert(cancellation);
         ksession.fireAllRules();
         contractCancellationRepository.save(cancellation);
+        double debt = contract.getDiscount();
+        contract.setDiscount(discount);
         contractRepository.save(contract);
-        return new CancellationDTO(true, contract.getDiscount());
+        return new CancellationDTO(true, debt);
     }
 
     private KieSession createKieSessionFromDRL(String drl){

@@ -28,15 +28,14 @@ import static com.ftn.sbnz.service.config.DroolsConfig.testKieSessionFactsAndRul
 public class ContractScheduler {
 
     private final ContractRepository contractRepository;
-    private final PackagesRepository packagesRepository;
     private final IContractService contractService;
+    private final KieContainer kieContainer;
 
     @Scheduled(fixedRate = 20000) // na min
     public void CheckForExpirations() {
         System.out.println("Scheduled task for contract expiration executed at " + LocalDateTime.now());
         KieServices ks = KieServices.Factory.get();
-        KieContainer kContainer = ks.getKieClasspathContainer();
-        KieSession kieSession = kContainer.newKieSession("forwardKsession");
+        KieSession kieSession = kieContainer.newKieSession("forwardKsession");
 
         LocalDateTime from = LocalDateTime.now();
         LocalDateTime to = LocalDateTime.now().plusMonths(1);

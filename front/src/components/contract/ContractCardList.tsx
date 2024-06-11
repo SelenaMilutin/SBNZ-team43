@@ -4,9 +4,10 @@ import ContractCard from "./ContractCard";
 
 interface ContractCardListProps {
     contracts: Contract[]
+    cancelContractClick: (contractId: number) => void;
 }
 
-const ContractCardList = ({contracts} : ContractCardListProps) => {
+const ContractCardList = ({contracts, cancelContractClick} : ContractCardListProps) => {
 
     return (
         <CardListStyle>
@@ -14,6 +15,7 @@ const ContractCardList = ({contracts} : ContractCardListProps) => {
                 <ContractCard 
                     contract={contract}
                     key={contract.id}
+                    cancelContractClick={cancelContractClick}
                 />
             ))}
         </CardListStyle>

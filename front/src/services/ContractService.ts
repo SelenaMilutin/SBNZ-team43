@@ -23,4 +23,8 @@ export class ContractService {
         return HttpClient.get(finalUrl);
     }
 
+    public static async cancelContract(contractId: number) {
+        const finalUrl = `/cancellation/${contractId}`
+        return HttpClient.post(finalUrl, null, {} );
+    }
 }

@@ -6,7 +6,9 @@ import com.ftn.sbnz.service.exception.servicearea.NoServiceAreaAvailableExceptio
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+@RestControllerAdvice
 public class ContractExceptionHandlerAdvice {
 
     @ExceptionHandler(NoContractProposalExistsException.class)
