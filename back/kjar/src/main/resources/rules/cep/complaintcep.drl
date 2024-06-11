@@ -1,15 +1,17 @@
 package rules.cep;
 
-import com.ftn.sbnz.model.complaint.PackageComplaint;
+import com.ftn.sbnz.model.complaint.Complaint;
 import com.ftn.sbnz.model.packages.Packages;
+
+global Packages recomend;
 
 rule "10 complaints for package in 24 hours"
     when
-    $c: PackageComplaint(
+    $c: Complaint(
         $packages: packages
         )
         Number(intValue == 10) from accumulate(
-                $c2: PackageComplaint(
+                $c2: Complaint(
                 this != $c,
                 packages.id == $packages.id,
                 $c2 after[0s, 24h] $c
@@ -22,11 +24,11 @@ end
 
 rule "50 complaints for package in 24 hours"
     when
-    $c: PackageComplaint(
+    $c: Complaint(
         $packages: packages
         )
         Number(intValue == 50) from accumulate(
-                $c2: PackageComplaint(
+                $c2: Complaint(
                 this != $c,
                 packages.id == $packages.id,
                 $c2 after[0s, 24h] $c
@@ -36,4 +38,50 @@ rule "50 complaints for package in 24 hours"
     then
         System.out.println("Alerting admin: 50 complaints received for package " + $packages.getId() + " in 24 hours\nTaking package off offers.");
         modify($packages) { setInOfferFlag(false) }
+end
+
+// sama obrada zalbi
+rule "comlaint for premium user"
+    no-loop
+    salience 10
+    when
+    $c: Complaint(
+        client.premium == true,
+        complaintMsg != "",
+        $packag: packages
+    )
+    $p: Packages(
+    packageType == $packag.packageType,
+    id != $packag.id)
+    not (Packages(parent != null, parent.name == $p.name))
+    then
+    System.out.println("comlaint for premium user");
+    recomend = $p;
+end
+
+rule "comlaint for non-premium user"
+    no-loop
+    when
+    $c: Complaint(
+        client.premium == false,
+        complaintMsg != "",
+        $packag: packages
+    )
+    $p: Packages(
+    packageType == $packag.packageType,
+    id != $packag.id)
+    not (Packages( parent != null, parent.name == $p.name))
+    then
+    System.out.println("comlaint for non premium user");
+    recomend = $p;
+end
+
+rule "comlaint with recomendation"
+    when
+    $c: Complaint(
+        recommendation != "",
+        $packag: packages
+    )
+    then
+    System.out.println($c.getRecommendation());
 end

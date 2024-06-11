@@ -1,16 +1,16 @@
 package com.ftn.sbnz.service.contract.service;
 
 import com.ftn.sbnz.model.contract.Contract;
-import com.ftn.sbnz.model.contract.ContractProposal;
 import com.ftn.sbnz.model.contract.dto.ContractDTO;
 import com.ftn.sbnz.model.contract.dto.CreateContractDTO;
+import com.ftn.sbnz.model.contract.dto.PyChartDTO;
 import com.ftn.sbnz.model.contract.service.IContractService;
 import com.ftn.sbnz.model.packages.Packages;
 import com.ftn.sbnz.model.packages.dto.PackageDTO;
 import com.ftn.sbnz.model.user.Client;
 import com.ftn.sbnz.model.user.Discount;
-import com.ftn.sbnz.service.contract.repository.ContractProposalRepository;
 import com.ftn.sbnz.service.exception.contract.NoContractProposalExistsException;
+import com.ftn.sbnz.service.config.DroolsConfig;
 import com.ftn.sbnz.service.exception.packages.PackageDoesNotExistByIdException;
 import com.ftn.sbnz.service.exception.user.UsernameNotFoundException;
 import com.ftn.sbnz.service.mapper.ContractMapper;
@@ -19,15 +19,14 @@ import com.ftn.sbnz.service.packages.repository.PackagesRepository;
 import com.ftn.sbnz.service.user.repository.ClientRepository;
 import com.ftn.sbnz.service.user.repository.DiscountRepository;
 import lombok.RequiredArgsConstructor;
+import org.kie.api.runtime.KieSession;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.ftn.sbnz.service.contract.repository.ContractRepository;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Service
@@ -40,6 +39,7 @@ public class ContractService implements IContractService {
     private final ContractDroolsService contractDroolsService;
     private final ClientRepository clientRepository;
     private final PackageMapper packageMapper;
+    private final DroolsConfig config;
 
     @Override
     public ContractDTO create(CreateContractDTO createContractDTO, String username) {
@@ -96,12 +96,48 @@ public class ContractService implements IContractService {
     @Override
     public PackageDTO getContractProposal(String username) {
         Client client = clientRepository.findByEmail(username).orElseThrow(
-                () -> {return new UsernameNotFoundException(username); }
+                () -> {
+                    return new UsernameNotFoundException(username);
+                }
         );
         if (!client.hasContractProposal()) {
             throw new NoContractProposalExistsException(client.getUsername());
         }
         return packageMapper.mapPackageToPackageDTO(client.getContractProposal().getPackages());
+    }
+
+    public ArrayList<PyChartDTO> getPrepaidPostpaidDistribution() {
+        KieSession kieSession = config.backwardForReportsKsession();
+
+        List<Contract> contracts = contractRepository.findAll();
+        for (Contract c: contracts) {
+//            System.out.println(c.getPackages().getName());
+            kieSession.insert(c);
+        }
+
+        List<Packages> packages = packagesRepository.findAll();
+        for (Packages c: packages) {
+//            System.out.println(c.getName());
+            kieSession.insert(c);
+        }
+
+        int prepaidCount = 0;
+        int postpaidCount = 0;
+        kieSession.setGlobal("prepaidCount", prepaidCount);
+        kieSession.setGlobal("postpaidCount", postpaidCount);
+        kieSession.fireAllRules();
+        ArrayList<PyChartDTO> values = new ArrayList<>();
+        values.add(new PyChartDTO("Pripejd", prepaidCount));
+        values.add(new PyChartDTO("Postpejd", postpaidCount));
+        return values;
+    }
+
+    @Override
+    public Contract findById(Long id) {
+        Optional<Contract> opt = contractRepository.findById(id);
+        if (opt.isEmpty())
+            throw new RuntimeException("Contract now found");
+        return opt.get();
     }
 
     //    @Scheduled(fixedDelay = 12 * 60 * 60 * 1000) // 12 hours

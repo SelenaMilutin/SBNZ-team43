@@ -40,6 +40,17 @@ public class DroolsConfig {
     @Bean
     public KieSession bwTechnicalissueKsession() {
         return kieContainer().newKieSession("bwTechnicalissueKsession");
+
+    }
+
+    @Bean
+    public KieSession backwardForReportsKsession() {
+        return kieContainer().newKieSession("bwKsession");
+    }
+
+    @Bean
+    public KieSession cepKsession() {
+        return kieContainer().newKieSession("cepKsession");
     }
 
     public static void testKieSessionFactsAndRules(KieSession kieSession) {

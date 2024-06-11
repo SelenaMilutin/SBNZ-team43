@@ -11,6 +11,10 @@ import com.ftn.sbnz.service.user.repository.ClientRepository;
 import lombok.RequiredArgsConstructor;
 import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.rule.FactHandle;
+import com.ftn.sbnz.model.complaint.Complaint;
+import com.ftn.sbnz.model.packages.Packages;
+import com.ftn.sbnz.service.config.DroolsConfig;
+import com.ftn.sbnz.service.packages.repository.PackagesRepository;
 import org.springframework.stereotype.Service;
 
 import com.ftn.sbnz.service.complaint.repository.ComplaintRepository;
@@ -21,13 +25,17 @@ import java.util.*;
 
 import static com.ftn.sbnz.service.config.DroolsConfig.testKieSessionFactsAndRules;
 
-@RequiredArgsConstructor
+
 @Service
+@RequiredArgsConstructor
 public class ComplaintService implements IComplaintService {
     
     private final TechnicalIssueRepository technicalIssueRepository;
     private final ClientRepository clientRepository;
+    private final ComplaintRepository complaintRepository;
+    private final PackagesRepository packagesRepository;
     private final KieSession bwTechnicalissueKsession;
+    private final DroolsConfig config;
     private Map<String, String> solutions;
 
     @PostConstruct
@@ -44,7 +52,6 @@ public class ComplaintService implements IComplaintService {
         technicalIssue.setSubmitTime(LocalDateTime.now());
         technicalIssue.setConsequence(issueConsequence);
         technicalIssue.setClient(client);
-        technicalIssue.setMessage("no message");
         TechnicalIssue saved = technicalIssueRepository.save(technicalIssue);
 
         FactHandle technicalIssueHandle = bwTechnicalissueKsession.insert(saved);
@@ -126,5 +133,27 @@ public class ComplaintService implements IComplaintService {
             bwTechnicalissueKsession.insert(issue);
         }
         bwTechnicalissueKsession.setGlobal("complaintService", this);
+    }
+
+    @Override
+    public void handleComplaint(Complaint complaint) {
+        KieSession kieSession = config.cepKsession();
+        Packages recommendedPackage = new Packages();
+        kieSession.setGlobal("recomend", recommendedPackage);
+        List<Packages> packages = packagesRepository.findAll();
+        for (Packages c: packages) {
+            kieSession.insert(c);
+        }
+        kieSession.fireAllRules();
+        kieSession.insert(complaint);
+        kieSession.fireAllRules();
+        recommendedPackage = (Packages) kieSession.getGlobal("recomend");
+        if (recommendedPackage != null) {
+            System.out.println("jeje");
+        }
+        else {
+            System.out.println("aaaaaaaa");
+        }
+        complaintRepository.save(complaint);
     }
 }

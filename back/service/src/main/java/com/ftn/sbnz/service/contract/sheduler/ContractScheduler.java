@@ -45,7 +45,7 @@ public class ContractScheduler {
 
         for (NewContractCreation creation: contractCreations)
         {
-
+            
         }
 
 

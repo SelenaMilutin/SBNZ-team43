@@ -4,4 +4,5 @@ public interface IAppUserService {
 
     UserProfileDTO getUserProfile(String username);
 
+    AppUser findById(long l);
 }

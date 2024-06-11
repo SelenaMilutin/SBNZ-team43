@@ -21,6 +21,9 @@ insert into adminn (id) values (2) ON CONFLICT (id) DO NOTHING;
 -- TRUNCATE TABLE internet_packages;
 -- TRUNCATE TABLE cable_packages;
 TRUNCATE TABLE packages CASCADE;
+TRUNCATE TABLE mobile_packages RESTART IDENTITY CASCADE;
+TRUNCATE TABLE internet_packages RESTART IDENTITY CASCADE;
+TRUNCATE TABLE cable_packages RESTART IDENTITY CASCADE;
 ALTER SEQUENCE packages_id_seq RESTART WITH 1;
 
 -- insert into passengers_rides (passenger_id, ride_id) values (1, 1);
@@ -34,7 +37,7 @@ VALUES (NULL, 'All cable packages', 49.99, 1, true);
 INSERT INTO packages (parent_id, name, monthly_price, package_type, in_offer_flag)
 VALUES (2, 'Postpejd', 49.99, 0, true); --4
 INSERT INTO packages (parent_id, name, monthly_price, package_type, in_offer_flag)
-VALUES (2, 'Prepejd', 49.99, 0, true); --5
+VALUES (2, 'Pripejd', 49.99, 0, true); --5
 INSERT INTO packages (parent_id, name, monthly_price, package_type, in_offer_flag)
 VALUES (2, 'Rooming', 49.99, 0, true); --6
 INSERT INTO packages (parent_id, name, monthly_price, package_type, in_offer_flag)
@@ -345,9 +348,11 @@ VALUES (141, 'L50-5', 49.99, 0, true); --4
 INSERT INTO packages (parent_id, name, monthly_price, package_type, in_offer_flag)
 VALUES (141, 'L50-10', 49.99, 0, true); --159 KRAJ INTERNETA
 
-insert into mobile_packages (id, minutes, internet, expiration)
-values (2, 0, 0, 0);
+insert into mobile_packages (id, minutes, internet, expiration) values (2, 0, 0, 0);
 
 insert into cable_packages (id, chanel_number) values (3, 0);
 
-insert into internet_packages(id, internet, expiration) values (1, 0, 0)
+insert into internet_packages(id, internet, expiration) values (1, 0, 0);
+
+INSERT INTO contract (start_date, expiration_date, active_flag, client_id, packages_id, discount, proccessed_flag)
+VALUES ('2022-06-08 14:30:00', '2024-12-08 14:30:00', true, 1, 21, 0.0, true);

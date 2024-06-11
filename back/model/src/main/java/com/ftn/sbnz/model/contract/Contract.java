@@ -10,6 +10,7 @@ import java.time.temporal.ChronoUnit;
 import javax.persistence.*;
 
 import com.ftn.sbnz.model.user.Client;
+import org.kie.api.definition.type.Position;
 import org.kie.api.definition.type.Role;
 import org.springframework.context.event.EventListener;
 
