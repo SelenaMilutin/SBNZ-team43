@@ -1,4 +1,4 @@
-package com.ftn.sbnz.service.complaint.Controller;
+package com.ftn.sbnz.service.complaint.controller;
 
 import com.ftn.sbnz.model.complaint.IssueAndSolution;
 import com.ftn.sbnz.model.user.AppUser;

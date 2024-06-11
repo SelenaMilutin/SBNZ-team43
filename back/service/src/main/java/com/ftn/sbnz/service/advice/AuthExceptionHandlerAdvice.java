@@ -1,5 +1,6 @@
 package com.ftn.sbnz.service.advice;
 
+import com.ftn.sbnz.service.exception.user.UserBlockedException;
 import com.ftn.sbnz.service.exception.user.UserDoesNotExistByIdException;
 import com.ftn.sbnz.service.exception.user.UsernameAlreadyExistsException;
 import com.ftn.sbnz.service.exception.user.UsernameNotFoundException;
@@ -29,6 +30,11 @@ public class AuthExceptionHandlerAdvice {
 
     @ExceptionHandler(UserDoesNotExistByIdException.class)
     public ResponseEntity<String> handleUserDoesNotExistByIdException(UserDoesNotExistByIdException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(UserBlockedException.class)
+    public ResponseEntity<String> handleUserBlockedException(UserBlockedException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 

@@ -5,6 +5,7 @@ import com.ftn.sbnz.model.user.Client;
 import com.ftn.sbnz.service.auth.dto.AuthResponseDTO;
 import com.ftn.sbnz.service.auth.dto.CreateUserDTO;
 import com.ftn.sbnz.service.auth.dto.LoginDTO;
+import com.ftn.sbnz.service.exception.user.UserBlockedException;
 import com.ftn.sbnz.service.exception.user.UsernameAlreadyExistsException;
 import com.ftn.sbnz.service.mapper.AppUserMapper;
 import com.ftn.sbnz.service.servicearea.service.ServiceAreaService;
@@ -48,6 +49,9 @@ public class AuthService implements IAuthService {
         AppUser user = appUserRepository.findByEmail(dto.getUsername()).orElseThrow(
                 () -> new UsernameNotFoundException(dto.getUsername())
         );
+        if (user.isBlockedFlag()) {
+            throw new UserBlockedException(user.getId());
+        }
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(dto.getUsername(), dto.getPassword(), user.getAuthorities()));
         SecurityContextHolder.getContext().setAuthentication(authentication);

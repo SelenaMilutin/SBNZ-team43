@@ -1,6 +1,7 @@
 package com.ftn.sbnz.service.contract.service;
 
 import com.ftn.sbnz.model.contract.Contract;
+import com.ftn.sbnz.model.contract.ContractProposal;
 import com.ftn.sbnz.model.contract.dto.ContractDTO;
 import com.ftn.sbnz.model.contract.dto.CreateContractDTO;
 import com.ftn.sbnz.model.contract.dto.PyChartDTO;
@@ -9,6 +10,7 @@ import com.ftn.sbnz.model.packages.Packages;
 import com.ftn.sbnz.model.packages.dto.PackageDTO;
 import com.ftn.sbnz.model.user.Client;
 import com.ftn.sbnz.model.user.Discount;
+import com.ftn.sbnz.service.contract.repository.ContractProposalRepository;
 import com.ftn.sbnz.service.exception.contract.NoContractProposalExistsException;
 import com.ftn.sbnz.service.config.DroolsConfig;
 import com.ftn.sbnz.service.exception.contract.NoDiscountExistsForClientException;
@@ -41,6 +43,7 @@ public class ContractService implements IContractService {
     private final ClientRepository clientRepository;
     private final PackageMapper packageMapper;
     private final DroolsConfig config;
+    private final ContractProposalRepository contractProposalRepository;
 
     @Override
     public ContractDTO create(CreateContractDTO createContractDTO, String username) {
@@ -58,6 +61,7 @@ public class ContractService implements IContractService {
         contract.setClient(client);
         this.applyDiscount(contract);
         Contract saved = contractRepository.save(contract);
+        deleteProposal(client);
         contractDroolsService.insertOrUpdateContractFact(saved);
         return contractMapper.mapContractToContractDTO(saved);
     }
@@ -149,8 +153,27 @@ public class ContractService implements IContractService {
         return discount.getPercentage();
     }
 
+    @Override
+    public void deleteProposal(Client client) {
+        Optional<ContractProposal> proposal = contractProposalRepository.findByClientId(client.getId());
+        proposal.ifPresent(contractProposalRepository::delete);
+    }
+
+    @Override
+    public void createProposal(Client client) {
+        if (client.hasContractProposal()) {
+            return;
+        }
+        Random random = new Random();
+        ContractProposal proposal = new ContractProposal();
+        proposal.setClient(client);
+        List<Packages> pck = packagesRepository.findAll();
+        proposal.setPackages(pck.get(random.nextInt(pck.size()-1)));
+        contractProposalRepository.save(proposal);
+    }
+
     //    @Scheduled(fixedDelay = 12 * 60 * 60 * 1000) // 12 hours
-    @Scheduled(fixedDelay = 20 * 1000)
+    @Scheduled(fixedDelay = 120 * 1000)
     public void checkContractExpirations() {
         try {
             System.out.println("Scheduled task for contract executed at " + LocalDateTime.now());

@@ -181,4 +181,9 @@ public class ComplaintService implements IComplaintService {
     public void setPackageNotInOfferCausedByComplaints(Packages pack) {
         packagesRepository.save(pack);
     }
+
+    @Override
+    public void setClientToBeBlockedCausedByComplaints(Client client) {
+        clientRepository.save(client);
+    }
 }

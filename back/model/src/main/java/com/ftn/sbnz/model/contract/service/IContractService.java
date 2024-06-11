@@ -27,4 +27,8 @@ public interface IContractService {
     Contract findById(Long id);
 
     double getDiscount(Long clientId);
+
+    void deleteProposal(Client client);
+
+    void createProposal(Client client);
 }

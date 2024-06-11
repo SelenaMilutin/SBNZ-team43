@@ -4,6 +4,7 @@ import com.ftn.sbnz.model.complaint.Complaint;
 import com.ftn.sbnz.model.complaint.IssueAndSolution;
 import com.ftn.sbnz.model.complaint.TechnicalIssue;
 import com.ftn.sbnz.model.packages.Packages;
+import com.ftn.sbnz.model.user.Client;
 
 import java.util.List;
 
@@ -15,5 +16,6 @@ public interface IComplaintService {
     void handleComplaint(Complaint complaint);
     void notifyAdminAboutComplaints(String message);
     void setPackageNotInOfferCausedByComplaints(Packages pack);
+    void setClientToBeBlockedCausedByComplaints(Client client);
 
 }

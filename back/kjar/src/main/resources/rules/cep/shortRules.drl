@@ -4,6 +4,9 @@ dialect  "mvel"
 import com.ftn.sbnz.model.contract.Contract;
 import com.ftn.sbnz.model.contract.events.ConsumptionAlert;
 import com.ftn.sbnz.model.complaint.TechnicalIssue;
+import com.ftn.sbnz.model.complaint.service.IComplaintService;
+
+global IComplaintService complaintService;
 
 rule "Consumption Alert"
     when
@@ -34,5 +37,6 @@ rule "10 or more tehnical problems in one hour"
             )
     then
     modify($client){ setBlockedFlag(true)};
-    System.out.println("Korisnik blokiran");
+    complaintService.setClientToBeBlockedCausedByComplaints($client);
+    System.out.println("Korisnik blokiran zbog 10 prijava tehnickih problema u sat vremena");
 end
