@@ -41,6 +41,7 @@ const TechnicalIssuesPage = () => {
                     <div>
                         <TechnicalIssueButton text="Unavailable internet connection" type="submit" onClickHandler={() => {getIssueSolutions("Unavailable internet connection")}}/>
                         <TechnicalIssueButton text="Device is not connected to router's wifi" type="submit" onClickHandler={() => {getIssueSolutions("Device is not connected to router's wifi")}}/>
+                        <TechnicalIssueButton text="Wifi network is not set up correctly" type="submit" onClickHandler={() => {getIssueSolutions("Wifi network is not set up correctly")}}/>
                         <TechnicalIssueButton text="Can't establish connection with service area" type="submit" onClickHandler={() => {getIssueSolutions("Can't establish connection with service area")}}/>
                     </div>
                 </TechnicalIssueCardContentStyle>

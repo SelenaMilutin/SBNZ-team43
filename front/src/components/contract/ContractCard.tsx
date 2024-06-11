@@ -20,7 +20,9 @@ const ContractCard = ({contract, cancelContractClick} : ContractCardProps) => {
                     <p>Monthly price: {contract.packageDTO.monthlyPrice}</p>
                     { contract.discount !==0 && <p>Discount: {100 * contract.discount}%</p>}
                     <RightAlignDiv>
-                        <Button text="Cancel contract" type="button" onClickHandler={() => {cancelContractClick(contract.id)}}/>
+                        {   contract.activeFlag && 
+                            <Button text="Cancel contract" type="button" onClickHandler={() => {cancelContractClick(contract.id)}}/>
+                        }
                     </RightAlignDiv>
                 </CardContent>
             </CardStyle>

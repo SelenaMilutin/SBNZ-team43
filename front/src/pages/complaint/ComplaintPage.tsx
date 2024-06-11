@@ -72,7 +72,7 @@ const ComplaintPage = () => {
                 setSelectedInParent={handlePackageSelectionChange}/>
         }
         <ComplaintInput inputType="text" label="Write complaint" setValue={setComplaintText}/>
-        <ComplaintInput inputType="text" label="Write recommendation for improving service" setValue={handlePackageSelectionChange}/>
+        <ComplaintInput inputType="text" label="Write recommendation for improving service" setValue={setRecommendationText}/>
         <Button text="Submit" type="submit" onClickHandler={submit}/>
     </ComplaintPageStyle>
 

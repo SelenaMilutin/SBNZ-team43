@@ -115,6 +115,12 @@ public class ContractDroolsService {
     public void fireAllRules(IContractService globalContractService) {
         forwardContractKsession.setGlobal("contractService", globalContractService);
         testKieSessionFactsAndRules(forwardContractKsession);
+        for (Contract contract : contractRepository.findAll()) {
+            insertOrUpdateContractFact(contract);
+        }
+        for (Discount discount : discountRepository.findAll()) {
+            insertOrUpdateDiscountFact(discount);
+        }
         forwardContractKsession.fireAllRules();
     }
 

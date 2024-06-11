@@ -14,16 +14,15 @@ then
  System.out.println("Always Fire Rule has fired.");
 end
 
-rule "Service Area Set For Client"
+rule "Service Area Set For Client" salience 20
 when
     $client: Client( $serviceArea: serviceArea != null && previousServiceArea == null )
 then
     System.out.println("Service area is set to: " + $serviceArea.getId());
-    $serviceArea.incrementCurrentCapacity();
-    update($serviceArea);
-    $client.setPreviousServiceArea($serviceArea);
-    update($client)
-//    modify($serviceArea){incrementCurrentCapacity()};
+//    $client.setPreviousServiceArea($serviceArea);
+//    update($client);
+//    modify($client){setPreviousServiceArea($serviceArea)}
+    modify($serviceArea){incrementCurrentCapacity()};
     serviceAreaService.notifyClientAboutServiceAreaChange($client);
 end
 
@@ -37,24 +36,21 @@ then
     $previousServiceArea.decrementCurrentCapacity();
 //    modify($previousServiceArea){decrementCurrentCapacity()};
     $client.setPreviousServiceArea(null);
-    update($client);
-//    modify($client){setPreviousServiceArea(null)}
+//    update($client);
+    modify($client){setPreviousServiceArea(null)}
     serviceAreaService.notifyClientAboutServiceAreaChange($client);
 end
 
-rule "Service Area Became Unavailable" salience 10
+rule "Service Area Became Unavailable" salience 13
 when
     $sa: ServiceArea(availableFlag == false && lastUnavailableTimestamp == null)
 then
     System.out.println("Service area became unavailable: " + $sa.getId());
-    $sa.setLastUnavailableTimestamp(LocalDateTime.now());
-    update($sa);
-//    modify($sa){setLastUnavailableTimestamp(LocalDateTime.now())}
-    System.out.println($sa.getLastUnavailableTimestamp());
+    modify($sa){setLastUnavailableTimestamp(LocalDateTime.now())};
     serviceAreaService.notifyUsersAboutUnavailableServiceArea($sa);
 end
 
-rule "Notify Admin If More Than 10% Users Have Unavailable Service Areas And Activate Backup Areas" salience 9
+rule "Notify Admin If More Than 10% Users Have Unavailable Service Areas And Activate Backup Areas" salience 12
 when
     $totalClients: Number() from accumulate(
         $client: Client(serviceArea != null),

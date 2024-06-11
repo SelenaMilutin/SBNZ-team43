@@ -85,6 +85,7 @@ public class ServiceAreaService implements IServiceAreaService {
                     NOTIFICATION_PREFIX + "/" + client.getUsername(),
                     notificationDTO);
         }
+        serviceAreaRepository.save(serviceArea);
     }
 
     @Override
@@ -93,6 +94,8 @@ public class ServiceAreaService implements IServiceAreaService {
         this.simpMessagingTemplate.convertAndSend(
                     NOTIFICATION_PREFIX + "/" + client.getUsername(),
                     notificationDTO);
+        serviceAreaRepository.save(client.getServiceArea());
+        clientRepository.save(client);
     }
 
     @Override
@@ -113,6 +116,7 @@ public class ServiceAreaService implements IServiceAreaService {
         serviceArea.setAvailableFlag(availability);
         if (availability) {
             serviceArea.setLastUnavailableTimestamp(null);
+            serviceArea.setActiveFlag(availability);
         }
         serviceAreaRepository.save(serviceArea);
         insertOrUpdateServiceAreaFact(serviceArea);
@@ -141,6 +145,7 @@ public class ServiceAreaService implements IServiceAreaService {
             forwardServiceareaKsession.setGlobal("serviceAreaService", this);
             forwardServiceareaKsession.fireAllRules();
         }
+        serviceAreaRepository.saveAll(backupAreas);
     }
 
     @Override
@@ -157,26 +162,33 @@ public class ServiceAreaService implements IServiceAreaService {
             client.setPreviousServiceArea(null);
             serviceArea.decrementCurrentCapacity();
             client.setServiceArea(newServiceArea);
+            client.setPreviousServiceArea(null);
             clientRepository.save(client);
             serviceAreaRepository.save(serviceArea);
             insertOrUpdateClientFact(client);
+            insertOrUpdateServiceAreaFact(newServiceArea);
+            insertOrUpdateServiceAreaFact(serviceArea);
             forwardServiceareaKsession.setGlobal("serviceAreaService", this);
             forwardServiceareaKsession.fireAllRules();
+            serviceAreaRepository.save(newServiceArea);
         }
 
     }
 
-    @Scheduled(fixedDelay = 60 * 1000) // 1 minute
+    @Scheduled(fixedDelay = 30 * 1000) // 1 minute
     public void updateHandleForServiceAreaAvailability() {
+        if (serviceAreaHandles.isEmpty()) {
+            return;
+        }
         try {
             System.out.println("Scheduled task for service area executed at " + LocalDateTime.now());
             for (ServiceArea area : serviceAreaRepository.findServiceAreasByAvailableFlag(false)) {
                 insertOrUpdateServiceAreaFact(area);
                 System.out.println("Service area is unavailable, from " + area.getLastUnavailableTimestamp());
-                testKieSessionFactsAndRules(forwardServiceareaKsession);
-                forwardServiceareaKsession.setGlobal("serviceAreaService", this);
-                forwardServiceareaKsession.fireAllRules();
             }
+            forwardServiceareaKsession.setGlobal("serviceAreaService", this);
+            testKieSessionFactsAndRules(forwardServiceareaKsession);
+            forwardServiceareaKsession.fireAllRules();
         } catch (Exception e) {
             e.printStackTrace();
         }

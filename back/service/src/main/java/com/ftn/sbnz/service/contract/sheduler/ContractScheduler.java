@@ -31,7 +31,7 @@ public class ContractScheduler {
     private final IContractService contractService;
     private final KieContainer kieContainer;
 
-    @Scheduled(fixedRate = 20000) // na min
+    @Scheduled(fixedRate = 120000) // na min
     public void CheckForExpirations() {
         System.out.println("Scheduled task for contract expiration executed at " + LocalDateTime.now());
         KieServices ks = KieServices.Factory.get();

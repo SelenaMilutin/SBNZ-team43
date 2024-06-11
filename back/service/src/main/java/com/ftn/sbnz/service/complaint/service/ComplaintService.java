@@ -108,8 +108,15 @@ public class ComplaintService implements IComplaintService {
         solutions.put("Device is not connected to router's wifi", "Try following further solutions for diagnosing");
         issueList.add(new RecursiveTechnicalIssue("Wifi regime on device is turned off", "Device is not connected to router's wifi"));
         solutions.put("Wifi regime on device is turned off", "Turn on device's wifi regime");
+        issueList.add(new RecursiveTechnicalIssue("Wifi network is not set up correctly", "Device is not connected to router's wifi"));
+        solutions.put("Wifi network is not set up correctly", "Try following further solutions for diagnosing");
+        issueList.add(new RecursiveTechnicalIssue("Incorrect 5G configuration", "Wifi network is not set up correctly"));
+        issueList.add(new RecursiveTechnicalIssue("Incorrect 3G configuration", "Wifi network is not set up correctly"));
+        solutions.put("Incorrect 5G configuration", "Call operator to help you fix this issue with your device.");
+        solutions.put("Incorrect 3G configuration", "Call operator to help you fix this issue with your device.");
         issueList.add(new RecursiveTechnicalIssue("Wifi password entered is incorrect", "Device is not connected to router's wifi"));
         solutions.put("Wifi password entered is incorrect", "Check for correct password and try entering it again");
+
         issueList.add(new RecursiveTechnicalIssue("Can't establish connection with service area", "Unavailable internet connection"));
         solutions.put("Can't establish connection with service area", "Check service area availability on profile page and wait for availability return");
         issueList.add(new RecursiveTechnicalIssue("Service area is unavailable", "Can't establish connection with service area"));
@@ -130,7 +137,7 @@ public class ComplaintService implements IComplaintService {
         issueList.add(new RecursiveTechnicalIssue("Your device is in a zone without reception", "No signal reception"));
         solutions.put("Your device is in a zone without reception", "Check out our signal zone page and find out where you can go to get into a zone with reception");
 
-        issueList.add(new RecursiveTechnicalIssue("Phone can't receive reception", "Service and signal range problems"));
+        issueList.add(new RecursiveTechnicalIssue("Phone can't receive reception", "No signal reception"));
         solutions.put("Phone can't receive reception", "Try following further solutions for diagnosing");
         issueList.add(new RecursiveTechnicalIssue("Phone is in Flight regime/Airplane mode", "Phone can't receive reception"));
         solutions.put("Phone is in Flight regime/Airplane mode", "Switch the regime off and restart phone");
