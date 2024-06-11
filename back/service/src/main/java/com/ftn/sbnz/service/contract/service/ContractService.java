@@ -45,6 +45,8 @@ public class ContractService implements IContractService {
     private final PackageMapper packageMapper;
     private final DroolsConfig config;
     private final ContractProposalRepository contractProposalRepository;
+    private double prepaidCount;
+    private double postpaidCount;
 
     @Override
     public ContractDTO create(CreateContractDTO createContractDTO, String username) {
@@ -114,7 +116,7 @@ public class ContractService implements IContractService {
 
     public ArrayList<PyChartDTO> getPrepaidPostpaidDistribution() {
         KieSession kieSession = config.backwardForReportsKsession();
-
+        kieSession.setGlobal("service", this);
         List<Contract> contracts = contractRepository.findAll();
         for (Contract c: contracts) {
             kieSession.insert(c);
@@ -128,13 +130,9 @@ public class ContractService implements IContractService {
                 kieSession.insert(p);
             }
         }
-
-        int prepaidCount = 0;
-        int postpaidCount = 0;
-        kieSession.setGlobal("prepaidCount", prepaidCount);
-        kieSession.setGlobal("postpaidCount", postpaidCount);
         kieSession.fireAllRules();
         ArrayList<PyChartDTO> values = new ArrayList<>();
+
         values.add(new PyChartDTO("Pripejd", prepaidCount));
         values.add(new PyChartDTO("Postpejd", postpaidCount));
         return values;
@@ -173,6 +171,12 @@ public class ContractService implements IContractService {
         List<Packages> pck = packagesRepository.findAll();
         proposal.setPackages(pck.get(random.nextInt(pck.size()-1)));
         contractProposalRepository.save(proposal);
+    }
+
+    @Override
+    public void setPrepaidAndPostpaid(Number prepaid, Number postpaid) {
+        prepaidCount = prepaid.doubleValue();
+        postpaidCount = postpaid.doubleValue();
     }
 
     //    @Scheduled(fixedDelay = 12 * 60 * 60 * 1000) // 12 hours

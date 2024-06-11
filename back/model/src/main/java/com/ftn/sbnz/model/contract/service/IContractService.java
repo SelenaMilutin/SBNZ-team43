@@ -31,4 +31,7 @@ public interface IContractService {
     void deleteProposal(Client client);
 
     void createProposal(Client client);
+
+    void setPrepaidAndPostpaid(Number prepaid, Number postpaid);
+
 }

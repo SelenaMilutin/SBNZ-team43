@@ -1,11 +1,10 @@
 package backward;
 import com.ftn.sbnz.model.contract.Contract;
 import com.ftn.sbnz.model.packages.dto.TransitionPackage;
+import com.ftn.sbnz.model.contract.service.IContractService;
 
 
-global Number postpaidCount;
-global Number prepaidCount;
-
+global IContractService service;
 //query isContained(String x, String y, String type)
 //    Packages(name == x, parent.name == y, type == packageType.toString())
 ////    Contract( packages.name == x, packages.parent != null, packages.parent.name == y )
@@ -46,21 +45,35 @@ end
 //rule "Count Postpaid Contracts"
 //when
 //    $count: Number() from accumulate(
-//        $contract: Contract($name: packages.name) and isContained($name, "Postpejd";),
+//        $contract: Contract($name: packages.name,
+//        $type: packages.packageType.toString())
+//        and
+//        isContainedIn($name, "Postpejd", $type;),
 //        count($contract)
 //    )
 //then
 //    postpaidCount = $count;
 //    System.out.println("Number of contracts containing 'Postpaid': " + $count);
 //end
-//
-//rule "Count Pripejd Contracts"
-//when
-//    $count: Number() from accumulate(
-//        $contract: Contract($name: packages.name) and isContained($name, "Pripejd";),
-//        count($contract)
-//    )
-//then
-//    prepaidCount = $count;
-//    System.out.println("Number of contracts containing 'Prepaid': " + $count);
-//end
+
+rule "Count Pripejd Contracts"
+when
+
+    $count: Number() from accumulate(
+        $contract: Contract($name: packages.name,
+        $type: packages.packageType.toString())
+        and
+        isContainedIn($name, "Pripejd", $type;),
+        count($contract)
+    )
+    $count2: Number() from accumulate(
+            $contract2: Contract($name2: packages.name,
+            $type2: packages.packageType.toString())
+            and
+            isContainedIn($name2, "Postpejd", $type2;),
+            count($contract2)
+        )
+then
+    service.setPrepaidAndPostpaid($count, $count2);
+    System.out.println("Number of contracts containing 'Prepaid': " + $count);
+end
