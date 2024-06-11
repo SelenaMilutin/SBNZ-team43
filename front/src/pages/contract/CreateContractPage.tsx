@@ -11,7 +11,7 @@ import { CardStyle } from "../../components/shared/Card/Card.style";
 
 
 const availableContractLengthOptions: ContractLengthOption[] = [
-    {id: "1", name: "6 months"  , length: 6, },
+    {id: "1",  name: "6 months" , length: 6, },
     {id: "2",  name: "12 months", length: 12,},
     {id: "3",  name: "24 months", length: 24,},
 ]

@@ -11,6 +11,7 @@ import ServiceAreaPage from "./pages/servicearea/ServiceAreasPage";
 import CreateContractPage from "./pages/contract/CreateContractPage";
 import TechnicalIssuesPage from "./pages/technicalissues/TechnicalIssuesPage";
 import ComplaintPage from "./pages/complaint/ComplaintPage";
+import ReportPage from "./pages/report/ReportPage";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
                 <Route path="contract/create" element={<CreateContractPage/>}/>
                 <Route path="technicalissue" element={<TechnicalIssuesPage/>}/>
                 <Route path="complaint" element={<ComplaintPage/>}/>
+                <Route path="report" element={<ReportPage/>}/>
               </Route>
           </Routes>
         </AuthProvider>

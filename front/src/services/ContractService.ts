@@ -27,4 +27,9 @@ export class ContractService {
         const finalUrl = `/cancellation/${contractId}`
         return HttpClient.post(finalUrl, null, {} );
     }
+
+    public static async getReport() {
+        const finalUrl = `${this.url}/pyCartReport`
+        return HttpClient.get(finalUrl);
+    }
 }

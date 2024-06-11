@@ -61,11 +61,6 @@ public class ContractController {
 
     @GetMapping(value = "/pyCartReport", produces = "application/json")
     ResponseEntity<ArrayList<PyChartDTO>> getPrepaidPostpaidDistribution() {
-//        AppUser user = (AppUser) jwtService.getAuthenticatedUser();
-//        if (user == null) {
-//            throw new AuthenticationCredentialsNotFoundException("User is not authenticated for creating contract");
-//        }
-
         return new ResponseEntity<>(contractService.getPrepaidPostpaidDistribution(), HttpStatus.OK);
     }
 

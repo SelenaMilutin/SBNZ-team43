@@ -50,14 +50,15 @@ export default function NavBar() {
                 <LinkStyle to="/home">Home</LinkStyle>
                 { token === null && <LinkStyle to="/login">Login</LinkStyle>}
                 { token === null && <LinkStyle to="/register">Register</LinkStyle>}
-                {/* { !(token === null) && (user?.role === "ADMIN") && <LinkStyle to="/servicearea">Service Areas</LinkStyle> } */}
-                 <LinkStyle to="/servicearea">Service Areas</LinkStyle> 
-                {/* { !(token === null) && (user?.role === "CLIENT") && <LinkStyle to="/contract/create">Create Contract</LinkStyle>} */}
-                { <LinkStyle to="/contract/create">Create Contract</LinkStyle> }
-                {/* { !(token === null) && (user?.role === "CLIENT") && <LinkStyle to="/technicalissue>Help</LinkStyle>} */}
-                { <LinkStyle to="/technicalissue">Help</LinkStyle> }
+                { !(token === null) && (user?.role === "ADMIN") && <LinkStyle to="/servicearea">Service Areas</LinkStyle> }
+                 {/* <LinkStyle to="/servicearea">Service Areas</LinkStyle>  */}
+                { !(token === null) && (user?.role === "CLIENT") && <LinkStyle to="/contract/create">Create Contract</LinkStyle>}
+                {/* { <LinkStyle to="/contract/create">Create Contract</LinkStyle> } */}
+                { !(token === null) && (user?.role === "CLIENT") && <LinkStyle to="/technicalissue">Help</LinkStyle>}
+                {/* { <LinkStyle to="/technicalissue">Help</LinkStyle> } */}
                 { !(token === null) && (user?.role === "CLIENT") && <LinkStyle to="/profile">Profile</LinkStyle>}
                 { !(token === null) && (user?.role === "CLIENT") && <LinkStyle to="/complaint">Send Complaint</LinkStyle>}
+                { !(token === null) && (user?.role === "ADMIN") && <LinkStyle to="/report">Reports</LinkStyle> }
                 { !(token === null) && <Button text={"Logout"} type={"button"} onClickHandler={onLogout} />}
             </NavBarStyle>
             <Outlet/>
