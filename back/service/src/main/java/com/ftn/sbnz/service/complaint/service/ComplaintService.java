@@ -138,22 +138,18 @@ public class ComplaintService implements IComplaintService {
     @Override
     public void handleComplaint(Complaint complaint) {
         KieSession kieSession = config.cepKsession();
-        Packages recommendedPackage = new Packages();
-        kieSession.setGlobal("recomend", recommendedPackage);
+        kieSession.setGlobal("complaintService", this);
         List<Packages> packages = packagesRepository.findAll();
         for (Packages c: packages) {
             kieSession.insert(c);
         }
-        kieSession.fireAllRules();
         kieSession.insert(complaint);
         kieSession.fireAllRules();
-        recommendedPackage = (Packages) kieSession.getGlobal("recomend");
-        if (recommendedPackage != null) {
-            System.out.println("jeje");
-        }
-        else {
-            System.out.println("aaaaaaaa");
-        }
         complaintRepository.save(complaint);
+    }
+
+    @Override
+    public void handlePackageRecommendation(Packages packages) {
+        System.out.println(packages);
     }
 }

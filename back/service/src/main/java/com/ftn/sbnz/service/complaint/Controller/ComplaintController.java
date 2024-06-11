@@ -53,7 +53,7 @@ public class ComplaintController {
 //        }
         user = appUserService.findById(1L);
         Packages packages = packagesService.findById((long) complaintRequest.getPackageId());
-        Complaint complaint = new Complaint(0L, complaintRequest.getComplaint(), complaintRequest.getRecommendation(), (Client) user, packages, new Date());
+        Complaint complaint = new Complaint(0L, complaintRequest.getComplaint(), complaintRequest.getRecommendation(), (Client) user, packages, new Date(), false);
         complaintService.handleComplaint(complaint);
         return ResponseEntity.ok().build();
     }
