@@ -1,9 +1,16 @@
-# project SBNZ
+# Project SBNZ
 
 
 
 ## Internet provider
-Aplication desinged for monitoring and manipulating smart devices inside of your smart homes or appartmants.
+Application designed for interacting with services of an internet provider,
+with drools support.
+* Making and cancelling contracts
+* Contract discounts
+* Real time updates about service availability
+* Tech support Technical issue diagnostics
+* Support for complaints
+  
 
 
 ## Requirements
@@ -17,7 +24,7 @@ Aplication desinged for monitoring and manipulating smart devices inside of your
 
 1. Install Java and Maven
 2. Install and start PostgreSQL
-   - Set credentials for authentication in application.properties (`spring.datasource.username` and `spring.datasource.password`) and create database with name `projectnwt2023` 
+   - Set credentials for authentication in application.properties (`spring.datasource.username` and `spring.datasource.password`) and create database with name `SBNZ2024` 
 3. Load dependencies of back (`pom.xml`) with Maven
 4. Do `mvn install` od kjar and models application in back
 5. Set your self in front folder. Run `npm install` and start application with `npm start`. And go to localhost://3000
