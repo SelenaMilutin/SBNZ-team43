@@ -69,4 +69,14 @@ public class ContractController {
         return new ResponseEntity<>(contractService.getPrepaidPostpaidDistribution(), HttpStatus.OK);
     }
 
+    @GetMapping("/discounts")
+    ResponseEntity<Double> getDiscount() {
+        AppUser user = (AppUser) jwtService.getAuthenticatedUser();
+        if (user == null) {
+            throw new AuthenticationCredentialsNotFoundException("User is not authenticated for getting contract proposal");
+        }
+
+        return new ResponseEntity<>(contractService.getDiscount(user.getId()), HttpStatus.OK);
+    }
+
 }

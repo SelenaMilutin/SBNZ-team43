@@ -27,6 +27,7 @@ const CreateContractPage = () => {
     const [mobilePackages, setMobilePackages] = useState<Packages[]>([]);
     const [netPackages, setNetPackages] = useState<Packages[]>([]);
     const [cablePackages, setCablePackages] = useState<Packages[]>([]);
+    const [discount, setDiscount] = useState<number | null>(null);
     const [isVisibleNet, setIsVisibleNet] = useState(false);
     const [isVisibleMobile, setIsVisibleMobile] = useState(false);
     const [isVisibleCable, setIsVisibleCable] = useState(false);
@@ -47,6 +48,7 @@ const CreateContractPage = () => {
         GetPackagesInOffer('MOBILE');
         GetPackagesInOffer('NET');
         GetPackagesInOffer('CABLE');
+        GetDiscount();
     }, [])
 
     async function GetPackagesInOffer(type: PackageType) {
@@ -56,6 +58,16 @@ const CreateContractPage = () => {
             if(type === 'MOBILE') setMobilePackages(res.data);
             if(type === 'CABLE') setCablePackages(res.data);
             
+            console.log(res)
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    async function GetDiscount() {
+        try {
+            const res = await ContractService.getDiscount();
+            setDiscount(res.data)
             console.log(res)
         } catch (error) {
             console.log(error);
@@ -117,9 +129,11 @@ const CreateContractPage = () => {
                         <hr style={{marginTop: '40px'}}/>
                         <CenteredDiv>
                             <p>You have selected following contract options: </p>
+                            { discount !== null && <p>Additionaly you have discount of {100 * discount}%</p>}
                             <CardStyle>
                                 <h4>• Package {selectedPackage?.name}</h4>
                                 <h4>• For {selectedContractLengthOptions[0]?.name} months</h4>
+                                { discount !== null && <h4>• With discount {100 * discount}%</h4> }
                             </CardStyle>
                             <Button text={"Create contract"} type={"submit"} onClickHandler={onSubmitClick} />
                         </CenteredDiv>

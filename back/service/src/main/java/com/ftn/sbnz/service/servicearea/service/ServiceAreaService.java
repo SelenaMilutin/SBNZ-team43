@@ -42,7 +42,6 @@ public class ServiceAreaService implements IServiceAreaService {
     private final Random random = new Random();
     private final ServiceAreaMapper serviceAreaMapper;
     private final KieSession forwardServiceareaKsession;
-//    private Map<Object, FactHandle> factHandles = new HashMap<>();
     private Map<Long, FactHandle> clientHandles;
     private Map<Long, FactHandle> serviceAreaHandles;
 

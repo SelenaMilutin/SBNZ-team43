@@ -4,9 +4,13 @@ import com.ftn.sbnz.model.complaint.IssueAndSolution;
 import com.ftn.sbnz.model.complaint.RecursiveTechnicalIssue;
 import com.ftn.sbnz.model.complaint.TechnicalIssue;
 import com.ftn.sbnz.model.complaint.service.IComplaintService;
+import com.ftn.sbnz.model.user.Admin;
 import com.ftn.sbnz.model.user.Client;
 import com.ftn.sbnz.service.complaint.repository.TechnicalIssueRepository;
+import com.ftn.sbnz.service.dto.NotificationDTO;
 import com.ftn.sbnz.service.exception.user.UsernameNotFoundException;
+import com.ftn.sbnz.service.mapper.NotificationMapper;
+import com.ftn.sbnz.service.user.repository.AdminRepository;
 import com.ftn.sbnz.service.user.repository.ClientRepository;
 import lombok.RequiredArgsConstructor;
 import org.kie.api.runtime.KieSession;
@@ -15,6 +19,7 @@ import com.ftn.sbnz.model.complaint.Complaint;
 import com.ftn.sbnz.model.packages.Packages;
 import com.ftn.sbnz.service.config.DroolsConfig;
 import com.ftn.sbnz.service.packages.repository.PackagesRepository;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import com.ftn.sbnz.service.complaint.repository.ComplaintRepository;
@@ -24,6 +29,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 import static com.ftn.sbnz.service.config.DroolsConfig.testKieSessionFactsAndRules;
+import static com.ftn.sbnz.service.config.WebSocketConfig.NOTIFICATION_PREFIX;
 
 
 @Service
@@ -32,9 +38,12 @@ public class ComplaintService implements IComplaintService {
     
     private final TechnicalIssueRepository technicalIssueRepository;
     private final ClientRepository clientRepository;
+    private final AdminRepository adminRepository;
     private final ComplaintRepository complaintRepository;
     private final PackagesRepository packagesRepository;
     private final KieSession bwTechnicalissueKsession;
+    private final NotificationMapper notificationMapper;
+    private final SimpMessagingTemplate simpMessagingTemplate;
     private final DroolsConfig config;
     private Map<String, String> solutions;
 
@@ -138,6 +147,7 @@ public class ComplaintService implements IComplaintService {
     @Override
     public void handleComplaint(Complaint complaint) {
         KieSession kieSession = config.cepKsession();
+        config.cepKsession().setGlobal("complaintService", this);
         Packages recommendedPackage = new Packages();
         kieSession.setGlobal("recomend", recommendedPackage);
         List<Packages> packages = packagesRepository.findAll();
@@ -155,5 +165,20 @@ public class ComplaintService implements IComplaintService {
             System.out.println("aaaaaaaa");
         }
         complaintRepository.save(complaint);
+    }
+
+    @Override
+    public void notifyAdminAboutComplaints(String message) {
+        NotificationDTO notificationDTO = notificationMapper.mapToNotificationDTO(LocalDateTime.now(), message);
+        for (Admin admin : adminRepository.findAll()) {
+            this.simpMessagingTemplate.convertAndSend(
+                    NOTIFICATION_PREFIX + "/" + admin.getUsername(),
+                    notificationDTO);
+        }
+    }
+
+    @Override
+    public void setPackageNotInOfferCausedByComplaints(Packages pack) {
+        packagesRepository.save(pack);
     }
 }

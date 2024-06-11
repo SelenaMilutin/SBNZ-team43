@@ -18,4 +18,9 @@ export class ContractService {
         return HttpClient.get(finalUrl)
     }
 
+    public static async getDiscount() {
+        const finalUrl = `${this.url}/discounts`
+        return HttpClient.get(finalUrl);
+    }
+
 }

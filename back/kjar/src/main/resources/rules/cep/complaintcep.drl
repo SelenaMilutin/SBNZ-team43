@@ -1,9 +1,11 @@
 package rules.cep;
 
 import com.ftn.sbnz.model.complaint.Complaint;
+import com.ftn.sbnz.model.complaint.service.IComplaintService;
 import com.ftn.sbnz.model.packages.Packages;
 
 global Packages recomend;
+global IComplaintService complaintService;
 
 rule "10 complaints for package in 24 hours"
     when
@@ -20,12 +22,14 @@ rule "10 complaints for package in 24 hours"
         )
     then
         System.out.println("Alerting admin: 10 complaints received for package " + $packages.getId() + " in 24 hours");
+        complaintService.notifyAdminAboutComplaints("10 complaints received for package id= " + $packages.getId() + " name= " + $packages.getName() + " in 24 hours");
 end
 
 rule "50 complaints for package in 24 hours"
     when
     $c: Complaint(
-        $packages: packages
+            $packages: packages,
+            $packages.inOfferFlag == true
         )
         Number(intValue == 50) from accumulate(
                 $c2: Complaint(
@@ -37,7 +41,9 @@ rule "50 complaints for package in 24 hours"
         )
     then
         System.out.println("Alerting admin: 50 complaints received for package " + $packages.getId() + " in 24 hours\nTaking package off offers.");
+        complaintService.notifyAdminAboutComplaints("50 complaints received for package id= " + $packages.getId() + " name= " + $packages.getName() + " in 24 hours");
         modify($packages) { setInOfferFlag(false) }
+        complaintService.setPackageNotInOfferCausedByComplaints($packages);
 end
 
 // sama obrada zalbi
@@ -83,5 +89,6 @@ rule "comlaint with recomendation"
         $packag: packages
     )
     then
-    System.out.println($c.getRecommendation());
+        System.out.println($c.getRecommendation());
+        complaintService.notifyAdminAboutComplaints("Complaint for package " + $packag.getId() + " name= " + $packag.getName() + " has recommendation: " + $c.getRecommendation());
 end

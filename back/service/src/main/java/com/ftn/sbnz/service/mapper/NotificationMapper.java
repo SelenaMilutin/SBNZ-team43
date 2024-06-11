@@ -4,6 +4,7 @@ import com.ftn.sbnz.model.servicearea.ServiceArea;
 import com.ftn.sbnz.service.dto.NotificationDTO;
 import org.springframework.stereotype.Component;
 
+import javax.management.Notification;
 import java.time.LocalDateTime;
 
 @Component
@@ -32,6 +33,14 @@ public class NotificationMapper {
             notificationDTO.setMessage("Your services have been moved to a new service area with id = " + serviceArea.getId().toString());
         }
         return notificationDTO;
+    }
+
+    public NotificationDTO mapToNotificationDTO(LocalDateTime timestamp, String message) {
+        NotificationDTO notificationDTO = new NotificationDTO();
+        notificationDTO.setTimestamp(timestamp);
+        notificationDTO.setMessage(message);
+        return notificationDTO;
+
     }
 
 }

@@ -5,6 +5,7 @@ import com.ftn.sbnz.model.contract.dto.ContractDTO;
 import com.ftn.sbnz.model.contract.dto.CreateContractDTO;
 import com.ftn.sbnz.model.packages.dto.PackageDTO;
 import com.ftn.sbnz.model.contract.dto.PyChartDTO;
+import com.ftn.sbnz.model.user.Client;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +21,10 @@ public interface IContractService {
     List<ContractDTO> getContractsForClient(String username);
 
     PackageDTO getContractProposal(String username);
+
     ArrayList<PyChartDTO> getPrepaidPostpaidDistribution();
 
     Contract findById(Long id);
+
+    double getDiscount(Long clientId);
 }

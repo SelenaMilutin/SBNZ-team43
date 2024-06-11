@@ -11,6 +11,7 @@ import com.ftn.sbnz.model.user.Client;
 import com.ftn.sbnz.model.user.Discount;
 import com.ftn.sbnz.service.exception.contract.NoContractProposalExistsException;
 import com.ftn.sbnz.service.config.DroolsConfig;
+import com.ftn.sbnz.service.exception.contract.NoDiscountExistsForClientException;
 import com.ftn.sbnz.service.exception.packages.PackageDoesNotExistByIdException;
 import com.ftn.sbnz.service.exception.user.UsernameNotFoundException;
 import com.ftn.sbnz.service.mapper.ContractMapper;
@@ -138,6 +139,14 @@ public class ContractService implements IContractService {
         if (opt.isEmpty())
             throw new RuntimeException("Contract now found");
         return opt.get();
+    }
+
+    @Override
+    public double getDiscount(Long clientId) {
+        Discount discount = discountRepository.findDiscountByClientId(clientId)
+                .orElseThrow( () -> {return new NoDiscountExistsForClientException(clientId);
+                });
+        return discount.getPercentage();
     }
 
     //    @Scheduled(fixedDelay = 12 * 60 * 60 * 1000) // 12 hours

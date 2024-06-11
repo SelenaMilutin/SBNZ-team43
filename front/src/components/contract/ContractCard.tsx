@@ -14,6 +14,7 @@ const ContractCard = ({contract} : ContractCardProps) => {
                     <p>From: {formatDate(contract.startDate)}</p>
                     <p>To: {formatDate(contract.expirationDate)}</p>
                     <p>Monthly price: {contract.packageDTO.monthlyPrice}</p>
+                    { contract.discount !==0 && <p>Discount: {100 * contract.discount}%</p>}
                 </CardContent>
             </CardStyle>
 }
