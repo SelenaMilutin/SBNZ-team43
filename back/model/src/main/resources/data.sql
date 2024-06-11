@@ -81,7 +81,7 @@ VALUES (11, 'Junior', 49.99, 0, true);  --25
 INSERT INTO packages (parent_id, name, monthly_price, package_type, in_offer_flag)
 VALUES (11, 'Senior', 49.99, 0, true);  --26
 INSERT INTO packages (parent_id, name, monthly_price, package_type, in_offer_flag)
-VALUES (12, 'Sokolovic', 49.99, 0, true);  --27
+VALUES (12, 'Sokolovic2', 49.99, 0, true);  --27
 INSERT INTO packages (parent_id, name, monthly_price, package_type, in_offer_flag)
 VALUES (13, 'Net 500MB', 49.99, 2, true);
 INSERT INTO packages (parent_id, name, monthly_price, package_type, in_offer_flag)
@@ -100,11 +100,11 @@ INSERT INTO packages (parent_id, name, monthly_price, package_type, in_offer_fla
 VALUES (15, 'Youtube i Twitch', 49.99, 0, true);
 INSERT INTO packages (parent_id, name, monthly_price, package_type, in_offer_flag)
 VALUES (16, 'Medjunarodni minuti', 49.99, 1, true); --36
-VALUES (5, 'Tariff', 49.99, 0, true);  --37
+VALUES (5, 'Tariff2', 49.99, 0, true);  --37
 INSERT INTO packages (parent_id, name, monthly_price, package_type, in_offer_flag)
-VALUES (5, 'Tariff dodaci', 49.99, 0, true); --38
+VALUES (5, 'Tariff2 dodaci', 49.99, 0, true); --38
 INSERT INTO packages (parent_id, name, monthly_price, package_type, in_offer_flag)
-VALUES (5, 'Mobilni internet', 49.99, 0, true); --39
+VALUES (5, 'Mobilni internet2', 49.99, 0, true); --39
 INSERT INTO packages (parent_id, name, monthly_price, package_type, in_offer_flag)
 VALUES (37, 'Bonus dobrodoslice', 49.99, 0, true); --40
 INSERT INTO packages (parent_id, name, monthly_price, package_type, in_offer_flag)
@@ -180,11 +180,11 @@ VALUES (71, 'Roming pricaj', 49.99, 0, true); --74
 INSERT INTO packages (parent_id, name, monthly_price, package_type, in_offer_flag)
 VALUES (71, 'TEL roming', 49.99, 0, true); --75
 INSERT INTO packages (parent_id, name, monthly_price, package_type, in_offer_flag)
-VALUES (72, 'Roming internet', 49.99, 0, true); --76
+VALUES (72, 'Roming internet2', 49.99, 0, true); --76
 INSERT INTO packages (parent_id, name, monthly_price, package_type, in_offer_flag)
-VALUES (72, 'Roming pricaj', 49.99, 0, true); --77
+VALUES (72, 'Roming pricaj2', 49.99, 0, true); --77
 INSERT INTO packages (parent_id, name, monthly_price, package_type, in_offer_flag)
-VALUES (72, 'TEL roming', 49.99, 0, true); --78
+VALUES (72, 'TEL roming2', 49.99, 0, true); --78
 INSERT INTO packages (parent_id, name, monthly_price, package_type, in_offer_flag)
 VALUES (73, 'Evropa net 1', 49.99, 0, true); --79
 INSERT INTO packages (parent_id, name, monthly_price, package_type, in_offer_flag)
@@ -214,33 +214,33 @@ VALUES (75, 'Plus 10', 49.99, 0, true); --
 INSERT INTO packages (parent_id, name, monthly_price, package_type, in_offer_flag)
 VALUES (75, 'Plus 20', 49.99, 0, true); --
 INSERT INTO packages (parent_id, name, monthly_price, package_type, in_offer_flag)
-VALUES (76, 'Evropa net 1', 49.99, 0, true); --79
+VALUES (76, 'Evropa net 1.', 49.99, 0, true); --79
 INSERT INTO packages (parent_id, name, monthly_price, package_type, in_offer_flag)
-VALUES (76, 'Planeta net 1', 49.99, 0, true); --80
+VALUES (76, 'Planeta net 1.', 49.99, 0, true); --80
 INSERT INTO packages (parent_id, name, monthly_price, package_type, in_offer_flag)
-VALUES (76, 'Evropa net 2', 49.99, 0, true); --
+VALUES (76, 'Evropa net 2.', 49.99, 0, true); --
 INSERT INTO packages (parent_id, name, monthly_price, package_type, in_offer_flag)
-VALUES (76, 'Planeta net 2', 49.99, 0, true); --
+VALUES (76, 'Planeta net 2.', 49.99, 0, true); --
 INSERT INTO packages (parent_id, name, monthly_price, package_type, in_offer_flag)
-VALUES (76, 'Evropa net 3', 49.99, 0, true); --
+VALUES (76, 'Evropa net 3.', 49.99, 0, true); --
 INSERT INTO packages (parent_id, name, monthly_price, package_type, in_offer_flag)
-VALUES (76, 'Planeta net 3', 49.99, 0, true); --
+VALUES (76, 'Planeta net 3.', 49.99, 0, true); --
 INSERT INTO packages (parent_id, name, monthly_price, package_type, in_offer_flag)
-VALUES (77, 'Evropa pricaj 1', 49.99, 0, true); --
+VALUES (77, 'Evropa pricaj 1.', 49.99, 0, true); --
 INSERT INTO packages (parent_id, name, monthly_price, package_type, in_offer_flag)
-VALUES (77, 'Planeta pricaj 1', 49.99, 0, true); --
+VALUES (77, 'Planeta pricaj 1.', 49.99, 0, true); --
 INSERT INTO packages (parent_id, name, monthly_price, package_type, in_offer_flag)
-VALUES (77, 'Evropa pricaj 2', 49.99, 0, true); --
+VALUES (77, 'Evropa pricaj 2.', 49.99, 0, true); --
 INSERT INTO packages (parent_id, name, monthly_price, package_type, in_offer_flag)
-VALUES (77, 'Planeta pricaj 2', 49.99, 0, true); --
+VALUES (77, 'Planeta pricaj 2.', 49.99, 0, true); --
 INSERT INTO packages (parent_id, name, monthly_price, package_type, in_offer_flag)
-VALUES (77, 'Evropa pricaj 3', 49.99, 0, true); --
+VALUES (77, 'Evropa pricaj 3.', 49.99, 0, true); --
 INSERT INTO packages (parent_id, name, monthly_price, package_type, in_offer_flag)
-VALUES (77, 'Planeta pricaj 3', 49.99, 0, true); --
+VALUES (77, 'Planeta pricaj 3.', 49.99, 0, true); --
 INSERT INTO packages (parent_id, name, monthly_price, package_type, in_offer_flag)
-VALUES (78, 'Plus 10', 49.99, 0, true); --
+VALUES (78, 'Plus 10.', 49.99, 0, true); --
 INSERT INTO packages (parent_id, name, monthly_price, package_type, in_offer_flag)
-VALUES (78, 'Plus 20', 49.99, 0, true); --106 KRAJ MOBILNIH
+VALUES (78, 'Plus 20.', 49.99, 0, true); --106 KRAJ MOBILNIH
 INSERT INTO packages (parent_id, name, monthly_price, package_type, in_offer_flag)
 VALUES (3, 'Iris', 49.99, 0, true); --107
 INSERT INTO packages (parent_id, name, monthly_price, package_type, in_offer_flag)
@@ -280,7 +280,7 @@ VALUES (118, 'Porodicni max', 49.99, 0, true); --124 KRAJ KABLOVKE
 INSERT INTO packages (parent_id, name, monthly_price, package_type, in_offer_flag)
 VALUES (1, 'Kucni internet', 49.99, 0, true); --125
 INSERT INTO packages (parent_id, name, monthly_price, package_type, in_offer_flag)
-VALUES (1, 'Mobilni internet', 49.99, 0, true); --126
+VALUES (1, 'Mobilni internet3', 49.99, 0, true); --126
 INSERT INTO packages (parent_id, name, monthly_price, package_type, in_offer_flag)
 VALUES (1, 'Usluge', 49.99, 0, true); --127
 INSERT INTO packages (parent_id, name, monthly_price, package_type, in_offer_flag)
@@ -326,23 +326,23 @@ VALUES (142, '240 RSD', 49.99, 0, true); --4
 INSERT INTO packages (parent_id, name, monthly_price, package_type, in_offer_flag)
 VALUES (142, '360 RSD', 49.99, 0, true); --4
 INSERT INTO packages (parent_id, name, monthly_price, package_type, in_offer_flag)
-VALUES (143, '120 RSD', 49.99, 0, true); --4
+VALUES (143, '120 RSD...', 49.99, 0, true); --4
 INSERT INTO packages (parent_id, name, monthly_price, package_type, in_offer_flag)
-VALUES (143, '240 RSD', 49.99, 0, true); --4
+VALUES (143, '240 RSD...', 49.99, 0, true); --4
 INSERT INTO packages (parent_id, name, monthly_price, package_type, in_offer_flag)
-VALUES (143, '360 RSD', 49.99, 0, true); --4
+VALUES (143, '360 RSD...', 49.99, 0, true); --4
 INSERT INTO packages (parent_id, name, monthly_price, package_type, in_offer_flag)
-VALUES (144, '120 RSD', 49.99, 0, true); --4
+VALUES (144, '120 RSD..', 49.99, 0, true); --4
 INSERT INTO packages (parent_id, name, monthly_price, package_type, in_offer_flag)
-VALUES (144, '240 RSD', 49.99, 0, true); --4
+VALUES (144, '240 RSD..', 49.99, 0, true); --4
 INSERT INTO packages (parent_id, name, monthly_price, package_type, in_offer_flag)
-VALUES (144, '360 RSD', 49.99, 0, true); --4
+VALUES (144, '360 RSD..', 49.99, 0, true); --4
 INSERT INTO packages (parent_id, name, monthly_price, package_type, in_offer_flag)
-VALUES (145, '120 RSD', 49.99, 0, true); --4
+VALUES (145, '120 RSD.', 49.99, 0, true); --4
 INSERT INTO packages (parent_id, name, monthly_price, package_type, in_offer_flag)
-VALUES (145, '240 RSD', 49.99, 0, true); --4
+VALUES (145, '240 RSD.', 49.99, 0, true); --4
 INSERT INTO packages (parent_id, name, monthly_price, package_type, in_offer_flag)
-VALUES (145, '360 RSD', 49.99, 0, true); --4
+VALUES (145, '360 RSD.', 49.99, 0, true); --4
 INSERT INTO packages (parent_id, name, monthly_price, package_type, in_offer_flag)
 VALUES (141, 'L50-5', 49.99, 0, true); --4
 INSERT INTO packages (parent_id, name, monthly_price, package_type, in_offer_flag)

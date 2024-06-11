@@ -8,6 +8,7 @@ import com.ftn.sbnz.model.contract.dto.PyChartDTO;
 import com.ftn.sbnz.model.contract.service.IContractService;
 import com.ftn.sbnz.model.packages.Packages;
 import com.ftn.sbnz.model.packages.dto.PackageDTO;
+import com.ftn.sbnz.model.packages.dto.TransitionPackage;
 import com.ftn.sbnz.model.user.Client;
 import com.ftn.sbnz.model.user.Discount;
 import com.ftn.sbnz.service.contract.repository.ContractProposalRepository;
@@ -44,6 +45,8 @@ public class ContractService implements IContractService {
     private final PackageMapper packageMapper;
     private final DroolsConfig config;
     private final ContractProposalRepository contractProposalRepository;
+    private double prepaidCount;
+    private double postpaidCount;
 
     @Override
     public ContractDTO create(CreateContractDTO createContractDTO, String username) {
@@ -113,25 +116,23 @@ public class ContractService implements IContractService {
 
     public ArrayList<PyChartDTO> getPrepaidPostpaidDistribution() {
         KieSession kieSession = config.backwardForReportsKsession();
-
+        kieSession.setGlobal("service", this);
         List<Contract> contracts = contractRepository.findAll();
         for (Contract c: contracts) {
-//            System.out.println(c.getPackages().getName());
             kieSession.insert(c);
         }
 
         List<Packages> packages = packagesRepository.findAll();
         for (Packages c: packages) {
 //            System.out.println(c.getName());
-            kieSession.insert(c);
+            if  (c.getParent() != null) {
+                TransitionPackage p = new TransitionPackage(c.getName(), c.getParent().getName(), c.getPackageType().toString());
+                kieSession.insert(p);
+            }
         }
-
-        int prepaidCount = 0;
-        int postpaidCount = 0;
-        kieSession.setGlobal("prepaidCount", prepaidCount);
-        kieSession.setGlobal("postpaidCount", postpaidCount);
         kieSession.fireAllRules();
         ArrayList<PyChartDTO> values = new ArrayList<>();
+
         values.add(new PyChartDTO("Pripejd", prepaidCount));
         values.add(new PyChartDTO("Postpejd", postpaidCount));
         return values;
@@ -170,6 +171,12 @@ public class ContractService implements IContractService {
         List<Packages> pck = packagesRepository.findAll();
         proposal.setPackages(pck.get(random.nextInt(pck.size()-1)));
         contractProposalRepository.save(proposal);
+    }
+
+    @Override
+    public void setPrepaidAndPostpaid(Number prepaid, Number postpaid) {
+        prepaidCount = prepaid.doubleValue();
+        postpaidCount = postpaid.doubleValue();
     }
 
     //    @Scheduled(fixedDelay = 12 * 60 * 60 * 1000) // 12 hours
